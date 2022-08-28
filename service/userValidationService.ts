@@ -41,18 +41,12 @@ export const registerUser = async (userCredentails: IUserCredentials): Promise<I
 export const loginUser = async (userCredentails: IUserCredentials): Promise<ILoginResponse> => {
     const { username, password } = userCredentails;
 
-    console.log("userCredentails", userCredentails);
-
     try {
         const registeredUser = await userModel.findOne({ username });
-
-        console.log("registeredUser", registeredUser);
 
         const correctPassword: boolean = registeredUser
             ? await bcrypt.compare(password, registeredUser?.passwordHash)
             : false;
-
-        console.log("correctPassword", correctPassword);
 
         if (!registerUser || !correctPassword) {
             return { code: ResponseCode.success, message: "Invalid username or password" };
@@ -73,7 +67,6 @@ export const loginUser = async (userCredentails: IUserCredentials): Promise<ILog
             loggedUser: { username, token },
         };
     } catch (error) {
-        // console.log(error);
         return { code: ResponseCode.badRequest, message: error };
     }
 };

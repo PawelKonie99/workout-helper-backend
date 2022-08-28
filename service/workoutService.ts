@@ -10,42 +10,43 @@ import { workoutModel } from "../database/models/workout";
 dotenv.config();
 
 interface IdecodedUser {
-  id: string;
-  username: string;
+    id: string;
+    username: string;
 }
 
 export const saveWorkoutToDb = async (workoutAndToken: IWorkoutSubmit): Promise<ISaveWorkoutResponse> => {
-  try {
-    console.log(workoutAndToken);
-    const { JWT_TOKEN_SECRET } = process.env;
+    try {
+        console.log(workoutAndToken);
 
-    const { jwtToken } = workoutAndToken;
-    const decodedUser = jwt.verify(jwtToken, JWT_TOKEN_SECRET) as IdecodedUser;
+        const { JWT_TOKEN_SECRET } = process.env;
 
-    // const user = await userModel.findByIdAndUpdate(decodedUser.id, { $push: { workout: workoutAndToken.workout.id } });
+        const { jwtToken } = workoutAndToken;
+        const decodedUser = jwt.verify(jwtToken, JWT_TOKEN_SECRET) as IdecodedUser;
 
-    const newWorkout = new workoutModel({
-      workout: workoutAndToken.workout,
-    });
+        // const user = await userModel.findByIdAndUpdate(decodedUser.id, { $push: { workout: workoutAndToken.workout.id } });
 
-    const test = await newWorkout.save();
-    console.log(test);
-    // db.Tutorial.findByIdAndUpdate(
-    //   tutorialId,
-    //   { $push: { comments: docComment._id } },
-    //   { new: true, useFindAndModify: false }
-    // );
+        const newWorkout = new workoutModel({
+            workout: workoutAndToken.workout,
+        });
 
-    // const newUser = new userModel({
-    //   username,
-    //   passwordHash: passwordHash,
-    // });
+        const test = await newWorkout.save();
+        console.log(test);
+        // db.Tutorial.findByIdAndUpdate(
+        //   tutorialId,
+        //   { $push: { comments: docComment._id } },
+        //   { new: true, useFindAndModify: false }
+        // );
 
-    // await newUser.save();
+        // const newUser = new userModel({
+        //   username,
+        //   passwordHash: passwordHash,
+        // });
 
-    return { code: ResponseCode.success, message: "", success: true };
-  } catch (error) {
-    console.log(error);
-    return { code: ResponseCode.badRequest, message: error, success: false };
-  }
+        // await newUser.save();
+
+        return { code: ResponseCode.success, message: "", success: true };
+    } catch (error) {
+        console.log(error);
+        return { code: ResponseCode.badRequest, message: error, success: false };
+    }
 };
