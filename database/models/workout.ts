@@ -1,18 +1,10 @@
 import uniqueValidator from "mongoose-unique-validator";
 import { Schema, model, Document } from "mongoose";
-
-export interface IWorkoutSeriesSchema {
-    workoutData: {
-        exerciseName: string;
-        repsQuantity: number;
-        seriesQuantity: number;
-        weightQuantity: number;
-    }[];
-}
+import { INewWorkout } from "../../types/INewWorkout.types";
 
 export interface IWorkoutSchema extends Document {
     id: string;
-    workoutData: IWorkoutSeriesSchema;
+    workoutData: INewWorkout;
 }
 
 const workoutSchema = new Schema<IWorkoutSchema>({
