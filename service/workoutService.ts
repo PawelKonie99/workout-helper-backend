@@ -1,12 +1,12 @@
-import { IUserCredentials, IRegisterResponse } from "../interfaces/userValidationInterfaces";
+import { IUserCredentials, IRegisterResponse } from "../types/IUserValidation.types";
 import { userModel } from "../database/models/user";
 import { ResponseCode } from "../enums/responseCode";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 import { checkPasswordLenght } from "./helpers/userValiation";
-import { ISaveWorkoutResponse, IWorkout, IWorkoutSubmit } from "../interfaces/workoutInterface";
 import { workoutModel } from "../database/models/workout";
+import { INewWorkout, ISaveWorkoutResponse } from "../types/INewWorkout.types";
 dotenv.config();
 
 interface IdecodedUser {
@@ -14,37 +14,28 @@ interface IdecodedUser {
     username: string;
 }
 
-export const saveWorkoutToDb = async (workoutAndToken: IWorkoutSubmit): Promise<ISaveWorkoutResponse> => {
+export const saveWorkoutToDb = async (
+    workout: INewWorkout,
+    userToken: string
+): Promise<ISaveWorkoutResponse> => {
     try {
-        console.log(workoutAndToken);
-
         const { JWT_TOKEN_SECRET } = process.env;
+        const { workoutData } = workout;
 
-        const { jwtToken } = workoutAndToken;
-        const decodedUser = jwt.verify(jwtToken, JWT_TOKEN_SECRET) as IdecodedUser;
+        const transformedToken = userToken.replace("Bearer ", "");
 
-        // const user = await userModel.findByIdAndUpdate(decodedUser.id, { $push: { workout: workoutAndToken.workout.id } });
+        const decodedUser = jwt.verify(transformedToken, JWT_TOKEN_SECRET) as IdecodedUser;
 
         const newWorkout = new workoutModel({
-            workout: workoutAndToken.workout,
+            workoutData,
+        });
+        const savedWorkout = await newWorkout.save();
+
+        await userModel.findByIdAndUpdate(decodedUser.id, {
+            $push: { workouts: savedWorkout },
         });
 
-        const test = await newWorkout.save();
-        console.log(test);
-        // db.Tutorial.findByIdAndUpdate(
-        //   tutorialId,
-        //   { $push: { comments: docComment._id } },
-        //   { new: true, useFindAndModify: false }
-        // );
-
-        // const newUser = new userModel({
-        //   username,
-        //   passwordHash: passwordHash,
-        // });
-
-        // await newUser.save();
-
-        return { code: ResponseCode.success, message: "", success: true };
+        return { code: ResponseCode.success, message: "Workout save successfully to databse", success: true };
     } catch (error) {
         console.log(error);
         return { code: ResponseCode.badRequest, message: error, success: false };
