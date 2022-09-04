@@ -1,6 +1,6 @@
 import { ResponseCode } from "../enums/responseCode";
 
-export interface INewWorkout {
+export interface IWorkout {
     workoutData: {
         exerciseName: string;
         repsQuantity: number;
@@ -13,4 +13,15 @@ export interface ISaveWorkoutResponse {
     code: ResponseCode;
     message: string;
     success: boolean;
+}
+
+export interface IAllWorkoutsResponse {
+    code: ResponseCode;
+    success: boolean;
+    allUserWorkouts?: {
+        workout: {
+            date: Date;
+            workoutData: IWorkout;
+        };
+    }[];
 }
