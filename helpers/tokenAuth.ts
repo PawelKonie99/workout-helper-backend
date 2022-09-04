@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
-import { IDecodedUser } from "../../types/IUser.types";
+import { IDecodedUser } from "../types/IUser.types";
 dotenv.config();
 
 export const tokenAuth = (userToken: string): IDecodedUser => {
