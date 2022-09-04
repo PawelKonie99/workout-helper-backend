@@ -4,7 +4,10 @@ import uniqueValidator from "mongoose-unique-validator";
 export interface IUserSchema extends mongoose.Document {
     username: string;
     passwordHash: string;
-    // workouts: string[]; todo type it
+    workouts: {
+        type?: mongoose.Types.ObjectId;
+        ref?: unknown;
+    }[];
 }
 
 const userSchema = new mongoose.Schema({

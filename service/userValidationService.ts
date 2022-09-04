@@ -1,4 +1,4 @@
-import { IUserCredentials, IRegisterResponse, ILoginResponse } from "../types/IUserValidation.types";
+import { IUserCredentials, IRegisterResponse, ILoginResponse } from "../types/IUser.types";
 import { userModel } from "../database/models/user";
 import { ResponseCode } from "../enums/responseCode";
 import jwt from "jsonwebtoken";

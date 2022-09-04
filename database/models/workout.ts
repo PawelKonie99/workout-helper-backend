@@ -1,33 +1,45 @@
 import uniqueValidator from "mongoose-unique-validator";
 import { Schema, model, Document } from "mongoose";
-import { INewWorkout } from "../../types/INewWorkout.types";
+import { IWorkout } from "../../types/IWorkout.types";
 
 export interface IWorkoutSchema extends Document {
-    id: string;
-    workoutData: INewWorkout;
+    workout: {
+        date: Date;
+        workoutData: IWorkout;
+    };
+    user: {
+        type: typeof Schema.Types.ObjectId;
+        ref: "User";
+    };
 }
 
 const workoutSchema = new Schema<IWorkoutSchema>({
-    workoutData: [
-        {
-            exerciseName: {
-                type: String,
-                required: true,
-            },
-            repsQuantity: {
-                type: String,
-                required: true,
-            },
-            seriesQuantity: {
-                type: String,
-                required: true,
-            },
-            weightQuantity: {
-                type: String,
-                required: true,
-            },
+    workout: {
+        date: {
+            type: Date,
+            required: true,
         },
-    ],
+        workoutData: [
+            {
+                exerciseName: {
+                    type: String,
+                    required: true,
+                },
+                repsQuantity: {
+                    type: String,
+                    required: true,
+                },
+                seriesQuantity: {
+                    type: String,
+                    required: true,
+                },
+                weightQuantity: {
+                    type: String,
+                    required: true,
+                },
+            },
+        ],
+    },
     user: {
         type: Schema.Types.ObjectId,
         ref: "User",
