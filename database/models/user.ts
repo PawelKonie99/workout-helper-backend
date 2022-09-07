@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import uniqueValidator from "mongoose-unique-validator";
 
 export interface IUserSchema extends mongoose.Document {
@@ -8,9 +8,13 @@ export interface IUserSchema extends mongoose.Document {
         type?: mongoose.Types.ObjectId;
         ref?: unknown;
     }[];
+    meal: {
+        type: typeof Schema.Types.ObjectId;
+        ref: "Meal";
+    };
 }
 
-const userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema<IUserSchema>({
     username: {
         type: String,
         unique: true,
@@ -26,6 +30,12 @@ const userSchema = new mongoose.Schema({
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Workout",
+        },
+    ],
+    meal: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Meal",
         },
     ],
 });

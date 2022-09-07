@@ -8,14 +8,11 @@ import { foodRouter } from "./controller/food";
 export const app = express();
 
 connectToDb();
+
 app.use(cors());
 app.use(express.static("build"));
 app.use(express.json());
 app.use("/", userValidationRouter);
 app.use("/", workoutRouter);
 app.use("/", foodRouter);
-// app.use("/", keywordRouter);
-
 app.use(unknownRequest);
-
-// module.exports = app;
