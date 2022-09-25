@@ -2,31 +2,30 @@ import dotenv from "dotenv";
 import { mealModel } from "../../database/models/meal";
 import { userModel } from "../../database/models/user";
 import { ResponseCode } from "../../enums/responseCode";
-import { formatDate } from "../../helpers/formatDate";
 import { tokenAuth } from "../../helpers/tokenAuth";
+import { IProductPayload, ISaveProductResponse } from "../../types/IFood.types";
+import { saveProperMeal } from "./helpers/saveProperMeal";
 
 dotenv.config();
 
-export const saveProductToDb = async (jakisObject: any, userToken: string): Promise<any> => {
+export const saveProductToDb = async (
+    productPayload: IProductPayload,
+    userToken: string
+): Promise<ISaveProductResponse> => {
     try {
-        const { breakfast, brunch, dinner, dessert, supper } = jakisObject;
-
         const decodedUser = tokenAuth(userToken);
 
-        const date = formatDate(new Date());
+        const date = new Date().toLocaleDateString();
+        // const date = new Date(Date.now() - 86400000).toLocaleDateString();
 
-        //Tutaj szukam po dacie czy posilki z tego dnia sa juz w bazie
-        const allDayMealFound = await mealModel.findOneAndUpdate(
-            { "allDayMeals.date": date },
-            { $push: { "allDayMeals.breakfast": { kcal: "3", proteins: "3", carbons: "3", fat: "3" } } }
-        );
+        const isAllDayMealFound = await mealModel.findOne({ "allDayMeals.mealDate": date });
 
-        //Wymyslilem to tak, ze wpierw zapisujemy pusty obiekt z posilkami z calego dnia a nastepnie dopushowywac to istniejacego juz obiektu
+        //Wymyslilem to tak, ze wpierw zapisujemy pusty obiekt z posilkami z calego dnia a nastepnie dopushowywac do istniejacego juz obiektu
         //Aktualnie tutaj wszystko dziala ale update powyzej jest z łapy, prawdopodobnie trzeba bedzie zrobic switcha i w zaleznosci
         //ktory posilek przyjdzie w body requesta tego bedziemy updateowac
         const newAllDayMeal = new mealModel({
             allDayMeals: {
-                date: date,
+                mealDate: date,
                 breakfast: [],
                 brunch: [],
                 dinner: [],
@@ -35,19 +34,25 @@ export const saveProductToDb = async (jakisObject: any, userToken: string): Prom
             },
         });
 
-        console.log("allDayMealFound", allDayMealFound);
-
         //Jezeli posilkow z danego dnia nie ma w bazie to wtedy tworzymy pusty obiekt
-        if (allDayMealFound === null) {
+        if (isAllDayMealFound === null) {
             const savedAllDayMeal = await newAllDayMeal.save();
+
+            console.log("nie znaleziono");
 
             await userModel.findByIdAndUpdate(decodedUser.id, {
                 $push: { meal: savedAllDayMeal },
             });
         }
 
-        return { code: ResponseCode.success, success: true };
+        await saveProperMeal(productPayload, mealModel, date);
+
+        return {
+            code: ResponseCode.success,
+            message: "Product saved successfully to databse",
+            success: true,
+        };
     } catch (error) {
-        return { code: ResponseCode.badRequest, success: false };
+        return { code: ResponseCode.badRequest, message: error, success: false };
     }
 };

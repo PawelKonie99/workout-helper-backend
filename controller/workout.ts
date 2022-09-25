@@ -4,7 +4,7 @@ import { getAllUserWorkouts } from "../service/workoutService/getAllUserWorkouts
 import { saveWorkoutToDb } from "../service/workoutService/saveWorkoutToDb";
 export const workoutRouter = router.Router();
 
-workoutRouter.post("/newWorkout", async (req: Request, res: Response) => {
+workoutRouter.post("/workouts", async (req: Request, res: Response) => {
     const userToken = req.headers.authorization;
 
     const saveWorkout = await saveWorkoutToDb(req.body, userToken);

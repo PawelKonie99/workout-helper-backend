@@ -3,7 +3,7 @@ import { userModel } from "../../database/models/user";
 import { ResponseCode } from "../../enums/responseCode";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
-import { checkPasswordLenght } from "../../helpers/userValiation";
+import { checkPasswordLenght } from "./helpers/userValiation";
 dotenv.config();
 
 export const registerUser = async (userCredentails: IUserCredentials): Promise<IRegisterResponse> => {

@@ -27,7 +27,11 @@ export const saveWorkoutToDb = async (
             $push: { workouts: savedWorkout },
         });
 
-        return { code: ResponseCode.success, message: "Workout save successfully to databse", success: true };
+        return {
+            code: ResponseCode.success,
+            message: "Workout saved successfully to databse",
+            success: true,
+        };
     } catch (error) {
         console.log(error);
         return { code: ResponseCode.badRequest, message: error, success: false };

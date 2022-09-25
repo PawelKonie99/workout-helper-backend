@@ -3,12 +3,12 @@ import uniqueValidator from "mongoose-unique-validator";
 
 export interface IMealSchema extends Document {
     allDayMeals: {
-        date: Date;
-        breakfast: [{ kcal: string; proteins: string; carbons: string; fat: string }];
-        brunch: [{ kcal: string; proteins: string; carbons: string; fat: string }];
-        dinner: [{ kcal: string; proteins: string; carbons: string; fat: string }];
-        dessert: [{ kcal: string; proteins: string; carbons: string; fat: string }];
-        supper: [{ kcal: string; proteins: string; carbons: string; fat: string }];
+        mealDate: string;
+        breakfast: [{ productName: string; kcal: string; proteins: string; carbons: string; fat: string }];
+        brunch: [{ productName: string; kcal: string; proteins: string; carbons: string; fat: string }];
+        dinner: [{ productName: string; kcal: string; proteins: string; carbons: string; fat: string }];
+        dessert: [{ productName: string; kcal: string; proteins: string; carbons: string; fat: string }];
+        supper: [{ productName: string; kcal: string; proteins: string; carbons: string; fat: string }];
     };
     user: {
         type: typeof Schema.Types.ObjectId;
@@ -18,12 +18,13 @@ export interface IMealSchema extends Document {
 
 const mealSchema = new Schema<IMealSchema>({
     allDayMeals: {
-        date: {
-            type: Date,
+        mealDate: {
+            type: String,
             required: true,
         },
         breakfast: [
             {
+                productName: { type: String },
                 kcal: { type: String },
                 proteins: { type: String },
                 carbons: { type: String },
@@ -32,6 +33,7 @@ const mealSchema = new Schema<IMealSchema>({
         ],
         brunch: [
             {
+                productName: { type: String },
                 kcal: { type: String },
                 proteins: { type: String },
                 carbons: { type: String },
@@ -40,6 +42,7 @@ const mealSchema = new Schema<IMealSchema>({
         ],
         dinner: [
             {
+                productName: { type: String },
                 kcal: { type: String },
                 proteins: { type: String },
                 carbons: { type: String },
@@ -48,6 +51,7 @@ const mealSchema = new Schema<IMealSchema>({
         ],
         dessert: [
             {
+                productName: { type: String },
                 kcal: { type: String },
                 proteins: { type: String },
                 carbons: { type: String },
@@ -56,6 +60,7 @@ const mealSchema = new Schema<IMealSchema>({
         ],
         supper: [
             {
+                productName: { type: String },
                 kcal: { type: String },
                 proteins: { type: String },
                 carbons: { type: String },
