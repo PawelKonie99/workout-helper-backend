@@ -6,12 +6,12 @@ export interface IUserSchema extends mongoose.Document {
     passwordHash: string;
     workouts: {
         type?: mongoose.Types.ObjectId;
-        ref?: unknown;
+        ref?: "Workout";
     }[];
-    meal: {
+    meals: {
         type: typeof Schema.Types.ObjectId;
         ref: "Meal";
-    };
+    }[];
 }
 
 const userSchema = new mongoose.Schema<IUserSchema>({
@@ -32,7 +32,7 @@ const userSchema = new mongoose.Schema<IUserSchema>({
             ref: "Workout",
         },
     ],
-    meal: [
+    meals: [
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Meal",

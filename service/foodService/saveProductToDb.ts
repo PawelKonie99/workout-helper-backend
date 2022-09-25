@@ -15,10 +15,27 @@ export const saveProductToDb = async (
     try {
         const decodedUser = tokenAuth(userToken);
 
+        if (!decodedUser) {
+            return { code: ResponseCode.badRequest, message: "User not found", success: false };
+        }
+
         const date = new Date().toLocaleDateString();
         // const date = new Date(Date.now() - 86400000).toLocaleDateString();
 
-        const isAllDayMealFound = await mealModel.findOne({ "allDayMeals.mealDate": date });
+        //Szukamy wszystkich id posilkow uzytkownika
+        const userMealsIds = await userModel.findById(decodedUser.id).select("meals").exec();
+
+        //tutaj otrzyujemy tablice z wszystkimi obiektami posilkow
+        const allUserProducts = await Promise.all(
+            userMealsIds.meals.map(async (mealId) => {
+                const workout = await mealModel.findById(mealId);
+
+                return workout;
+            })
+        );
+
+        //Szukamy posilkow z dzisiejszego dnia
+        const isAllDayMealFound = allUserProducts.find(({ allDayMeals }) => allDayMeals.mealDate === date);
 
         //Wymyslilem to tak, ze wpierw zapisujemy pusty obiekt z posilkami z calego dnia a nastepnie dopushowywac do istniejacego juz obiektu
         //Aktualnie tutaj wszystko dziala ale update powyzej jest z łapy, prawdopodobnie trzeba bedzie zrobic switcha i w zaleznosci
@@ -35,17 +52,21 @@ export const saveProductToDb = async (
         });
 
         //Jezeli posilkow z danego dnia nie ma w bazie to wtedy tworzymy pusty obiekt
-        if (isAllDayMealFound === null) {
+        if (!isAllDayMealFound) {
             const savedAllDayMeal = await newAllDayMeal.save();
 
-            console.log("nie znaleziono");
-
             await userModel.findByIdAndUpdate(decodedUser.id, {
-                $push: { meal: savedAllDayMeal },
+                $push: { meals: savedAllDayMeal },
             });
+
+            return {
+                code: ResponseCode.success,
+                message: "Product saved successfully to databse",
+                success: true,
+            };
         }
 
-        await saveProperMeal(productPayload, mealModel, date);
+        await saveProperMeal(productPayload, mealModel, isAllDayMealFound._id);
 
         return {
             code: ResponseCode.success,
@@ -53,6 +74,8 @@ export const saveProductToDb = async (
             success: true,
         };
     } catch (error) {
+        console.log("error", error);
+
         return { code: ResponseCode.badRequest, message: error, success: false };
     }
 };

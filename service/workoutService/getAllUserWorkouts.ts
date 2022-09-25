@@ -9,6 +9,10 @@ dotenv.config();
 export const getAllUserWorkouts = async (userToken: string): Promise<IAllWorkoutsResponse> => {
     try {
         const decodedUser = tokenAuth(userToken);
+        if (!decodedUser) {
+            return { code: ResponseCode.badRequest, success: false };
+        }
+
         const userWorkoutsIds = await userModel.findById(decodedUser.id).select("workouts").exec();
 
         const allUserWorkouts = await Promise.all(
