@@ -35,24 +35,36 @@ export const saveProductToDb = async (
         );
 
         //Szukamy posilkow z dzisiejszego dnia
-        const isAllDayMealFound = allUserProducts.find(({ allDayMeals }) => allDayMeals.mealDate === date);
-
-        //Wymyslilem to tak, ze wpierw zapisujemy pusty obiekt z posilkami z calego dnia a nastepnie dopushowywac do istniejacego juz obiektu
-        //Aktualnie tutaj wszystko dziala ale update powyzej jest z łapy, prawdopodobnie trzeba bedzie zrobic switcha i w zaleznosci
-        //ktory posilek przyjdzie w body requesta tego bedziemy updateowac
-        const newAllDayMeal = new mealModel({
-            allDayMeals: {
-                mealDate: date,
-                breakfast: [],
-                brunch: [],
-                dinner: [],
-                dessert: [],
-                supper: [],
-            },
-        });
+        const isAllDayMealFound = allUserProducts.find(
+            (allProducts) => allProducts?.allDayMeals?.mealDate === date
+        );
 
         //Jezeli posilkow z danego dnia nie ma w bazie to wtedy tworzymy pusty obiekt
         if (!isAllDayMealFound) {
+            //Wymyslilem to tak, ze wpierw zapisujemy pusty obiekt z posilkami z calego dnia a nastepnie dopushowywac do istniejacego juz obiektu
+            //Aktualnie tutaj wszystko dziala ale update powyzej jest z łapy, prawdopodobnie trzeba bedzie zrobic switcha i w zaleznosci
+            //ktory posilek przyjdzie w body requesta tego bedziemy updateowac
+            const { typeOfMeal, kcal, proteins, carbons, fat, productName } = productPayload;
+            const newAllDayMeal = new mealModel({
+                allDayMeals: {
+                    mealDate: date,
+                    breakfast: [],
+                    brunch: [],
+                    dinner: [],
+                    dessert: [],
+                    supper: [],
+                },
+            });
+
+            //Do pustego obiektu dodajemy to co chcial dodac uzytkownik
+            newAllDayMeal.allDayMeals[typeOfMeal].push({
+                productName,
+                kcal: kcal.toString(),
+                proteins: proteins.toString(),
+                carbons: carbons.toString(),
+                fat: fat.toString(),
+            });
+
             const savedAllDayMeal = await newAllDayMeal.save();
 
             await userModel.findByIdAndUpdate(decodedUser.id, {

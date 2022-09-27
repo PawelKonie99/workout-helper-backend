@@ -41,3 +41,19 @@ export interface IAllProductsResponse {
         };
     }[];
 }
+export interface ITodayProductsResponse {
+    code: ResponseCode;
+    success: boolean;
+    todayUserProducts?: ITodayProducts;
+}
+
+export interface ITodayProducts {
+    allDayMeals: {
+        mealDate: string;
+        breakfast: IDatabaseProduct[];
+        brunch: IDatabaseProduct[];
+        dinner: IDatabaseProduct[];
+        dessert: IDatabaseProduct[];
+        supper: IDatabaseProduct[];
+    };
+}
