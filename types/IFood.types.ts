@@ -45,6 +45,7 @@ export interface ITodayProductsResponse {
     code: ResponseCode;
     success: boolean;
     todayUserProducts?: ITodayProducts;
+    dailySummary?: IProductsSummary;
 }
 
 export interface ITodayProducts {
@@ -56,4 +57,11 @@ export interface ITodayProducts {
         dessert: IDatabaseProduct[];
         supper: IDatabaseProduct[];
     };
+}
+
+export interface IProductsSummary {
+    totalKcal: number;
+    totalProteins: number;
+    totalFat: number;
+    totalCarbons: number;
 }

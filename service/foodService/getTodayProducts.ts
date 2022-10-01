@@ -47,13 +47,16 @@ export const getTodayProducts = async (userToken: string): Promise<ITodayProduct
                 breakfast.carbons + brunch.carbons + dinner.carbons + dessert.carbons + supper.carbons,
         };
 
-        console.log("test", dailySummary);
-
         if (!todayUserProducts) {
-            return { code: ResponseCode.success, success: true, todayUserProducts: undefined };
+            return {
+                code: ResponseCode.success,
+                success: true,
+                todayUserProducts: undefined,
+                dailySummary: undefined,
+            };
         }
 
-        return { code: ResponseCode.success, success: true, todayUserProducts };
+        return { code: ResponseCode.success, success: true, todayUserProducts, dailySummary };
     } catch (error) {
         return { code: ResponseCode.badRequest, success: false };
     }

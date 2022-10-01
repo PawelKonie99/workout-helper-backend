@@ -12,16 +12,12 @@ export const sumMealProductsData = (
         fat: 0,
     };
 
-    console.log("todayUserProducts", todayUserProducts);
-
     todayUserProducts.allDayMeals[timeOfMeal].forEach((product) => {
         sumOfProductsData.carbons = sumOfProductsData.carbons + Number(product.carbons);
         sumOfProductsData.kcal = sumOfProductsData.kcal + Number(product.kcal);
         sumOfProductsData.proteins = sumOfProductsData.proteins + Number(product.proteins);
         sumOfProductsData.fat = sumOfProductsData.fat + Number(product.fat);
     });
-
-    console.log("test2", sumOfProductsData);
 
     return sumOfProductsData;
 };

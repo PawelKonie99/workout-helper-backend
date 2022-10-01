@@ -24,7 +24,7 @@ foodRouter.get("/foodProduct", async (req: Request, res: Response) => {
 foodRouter.get("/foodProduct/today", async (req: Request, res: Response) => {
     const userToken = req.headers.authorization;
     const userProducts = await getTodayProducts(userToken);
-    const { code, success, todayUserProducts } = userProducts;
+    const { code, success, todayUserProducts, dailySummary } = userProducts;
 
-    return res.status(code).json({ code: code, todayUserProducts, success });
+    return res.status(code).json({ code: code, todayUserProducts, success, dailySummary });
 });
