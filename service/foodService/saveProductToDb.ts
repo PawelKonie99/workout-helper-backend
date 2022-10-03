@@ -4,6 +4,7 @@ import { userModel } from "../../database/models/user";
 import { ResponseCode } from "../../enums/responseCode";
 import { tokenAuth } from "../../helpers/tokenAuth";
 import { IProductPayload, ISaveProductResponse } from "../../types/IFood.types";
+import { allUserProducts } from "./helpers/allUserProducts";
 import { saveProperMeal } from "./helpers/saveProperMeal";
 
 dotenv.config();
@@ -22,37 +23,35 @@ export const saveProductToDb = async (
         const date = new Date().toLocaleDateString();
         // const date = new Date(Date.now() - 86400000).toLocaleDateString();
 
-        //Szukamy wszystkich id posilkow uzytkownika
-        const userMealsIds = await userModel.findById(decodedUser.id).select("meals").exec();
-
-        //tutaj otrzyujemy tablice z wszystkimi obiektami posilkow
-        const allUserProducts = await Promise.all(
-            userMealsIds.meals.map(async (mealId) => {
-                const workout = await mealModel.findById(mealId);
-
-                return workout;
-            })
-        );
+        const getAllUserProducts = await allUserProducts({ mealModel, userModel, decodedUser });
 
         //Szukamy posilkow z dzisiejszego dnia
-        const isAllDayMealFound = allUserProducts.find(({ allDayMeals }) => allDayMeals.mealDate === date);
+        const isAllDayMealFound = getAllUserProducts.find((allProducts) => allProducts?.mealDate === date);
 
-        //Wymyslilem to tak, ze wpierw zapisujemy pusty obiekt z posilkami z calego dnia a nastepnie dopushowywac do istniejacego juz obiektu
-        //Aktualnie tutaj wszystko dziala ale update powyzej jest z łapy, prawdopodobnie trzeba bedzie zrobic switcha i w zaleznosci
-        //ktory posilek przyjdzie w body requesta tego bedziemy updateowac
-        const newAllDayMeal = new mealModel({
-            allDayMeals: {
+        //Jezeli posilkow z danego dnia nie ma w bazie to wtedy tworzymy pusty obiekt
+        if (!isAllDayMealFound) {
+            //Wymyslilem to tak, ze wpierw zapisujemy pusty obiekt z posilkami z calego dnia a nastepnie dopushowywac do istniejacego juz obiektu
+            //Aktualnie tutaj wszystko dziala ale update powyzej jest z łapy, prawdopodobnie trzeba bedzie zrobic switcha i w zaleznosci
+            //ktory posilek przyjdzie w body requesta tego bedziemy updateowac
+            const { typeOfMeal, kcal, proteins, carbons, fat, productName } = productPayload;
+            const newAllDayMeal = new mealModel({
                 mealDate: date,
                 breakfast: [],
                 brunch: [],
                 dinner: [],
                 dessert: [],
                 supper: [],
-            },
-        });
+            });
 
-        //Jezeli posilkow z danego dnia nie ma w bazie to wtedy tworzymy pusty obiekt
-        if (!isAllDayMealFound) {
+            //Do pustego obiektu dodajemy to co chcial dodac uzytkownik
+            newAllDayMeal[typeOfMeal].push({
+                productName,
+                kcal: kcal.toString(),
+                proteins: proteins.toString(),
+                carbons: carbons.toString(),
+                fat: fat.toString(),
+            });
+
             const savedAllDayMeal = await newAllDayMeal.save();
 
             await userModel.findByIdAndUpdate(decodedUser.id, {

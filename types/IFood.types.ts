@@ -27,17 +27,42 @@ export interface ISaveProductResponse {
     success: boolean;
 }
 
+export interface IDeleteProductResponse {
+    code: ResponseCode;
+    success: boolean;
+}
+
 export interface IAllProductsResponse {
     code: ResponseCode;
     success: boolean;
     allUserProducts?: {
-        allDayMeals: {
-            mealDate: string;
-            breakfast: IDatabaseProduct[];
-            brunch: IDatabaseProduct[];
-            dinner: IDatabaseProduct[];
-            dessert: IDatabaseProduct[];
-            supper: IDatabaseProduct[];
-        };
+        mealDate: string;
+        breakfast: IDatabaseProduct[];
+        brunch: IDatabaseProduct[];
+        dinner: IDatabaseProduct[];
+        dessert: IDatabaseProduct[];
+        supper: IDatabaseProduct[];
     }[];
+}
+export interface ITodayProductsResponse {
+    code: ResponseCode;
+    success: boolean;
+    todayUserProducts?: ITodayProducts;
+    dailySummary?: IProductsSummary;
+}
+
+export interface ITodayProducts {
+    mealDate: string;
+    breakfast: IDatabaseProduct[];
+    brunch: IDatabaseProduct[];
+    dinner: IDatabaseProduct[];
+    dessert: IDatabaseProduct[];
+    supper: IDatabaseProduct[];
+}
+
+export interface IProductsSummary {
+    totalKcal: number;
+    totalProteins: number;
+    totalFat: number;
+    totalCarbons: number;
 }

@@ -3,6 +3,7 @@ import { userModel } from "../../database/models/user";
 import { ResponseCode } from "../../enums/responseCode";
 import { tokenAuth } from "../../helpers/tokenAuth";
 import { IAllProductsResponse } from "../../types/IFood.types";
+import { allUserProducts } from "./helpers/allUserProducts";
 
 export const getAllProducts = async (userToken: string): Promise<IAllProductsResponse> => {
     try {
@@ -12,19 +13,9 @@ export const getAllProducts = async (userToken: string): Promise<IAllProductsRes
             return { code: ResponseCode.badRequest, success: false };
         }
 
-        //Szukamy wszystkich id posilkow uzytkownika
-        const userMealsIds = await userModel.findById(decodedUser.id).select("meals").exec();
+        const getAllUserProducts = await allUserProducts({ mealModel, userModel, decodedUser });
 
-        //tutaj otrzyujemy tablice z wszystkimi obiektami posilkow
-        const allUserProducts = await Promise.all(
-            userMealsIds.meals.map(async (mealId) => {
-                const workout = await mealModel.findById(mealId);
-
-                return workout;
-            })
-        );
-
-        return { code: ResponseCode.success, success: true, allUserProducts };
+        return { code: ResponseCode.success, success: true, allUserProducts: getAllUserProducts };
     } catch (error) {
         return { code: ResponseCode.badRequest, success: false };
     }

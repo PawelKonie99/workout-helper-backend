@@ -2,14 +2,12 @@ import { Schema, model, Document, Types } from "mongoose";
 import uniqueValidator from "mongoose-unique-validator";
 
 export interface IMealSchema extends Document {
-    allDayMeals: {
-        mealDate: string;
-        breakfast: [{ productName: string; kcal: string; proteins: string; carbons: string; fat: string }];
-        brunch: [{ productName: string; kcal: string; proteins: string; carbons: string; fat: string }];
-        dinner: [{ productName: string; kcal: string; proteins: string; carbons: string; fat: string }];
-        dessert: [{ productName: string; kcal: string; proteins: string; carbons: string; fat: string }];
-        supper: [{ productName: string; kcal: string; proteins: string; carbons: string; fat: string }];
-    };
+    mealDate: string;
+    breakfast: [{ productName: string; kcal: string; proteins: string; carbons: string; fat: string }];
+    brunch: [{ productName: string; kcal: string; proteins: string; carbons: string; fat: string }];
+    dinner: [{ productName: string; kcal: string; proteins: string; carbons: string; fat: string }];
+    dessert: [{ productName: string; kcal: string; proteins: string; carbons: string; fat: string }];
+    supper: [{ productName: string; kcal: string; proteins: string; carbons: string; fat: string }];
     user: {
         type: typeof Schema.Types.ObjectId;
         ref: "User";
@@ -17,57 +15,56 @@ export interface IMealSchema extends Document {
 }
 
 const mealSchema = new Schema<IMealSchema>({
-    allDayMeals: {
-        mealDate: {
-            type: String,
-            required: true,
-        },
-        breakfast: [
-            {
-                productName: { type: String },
-                kcal: { type: String },
-                proteins: { type: String },
-                carbons: { type: String },
-                fat: { type: String },
-            },
-        ],
-        brunch: [
-            {
-                productName: { type: String },
-                kcal: { type: String },
-                proteins: { type: String },
-                carbons: { type: String },
-                fat: { type: String },
-            },
-        ],
-        dinner: [
-            {
-                productName: { type: String },
-                kcal: { type: String },
-                proteins: { type: String },
-                carbons: { type: String },
-                fat: { type: String },
-            },
-        ],
-        dessert: [
-            {
-                productName: { type: String },
-                kcal: { type: String },
-                proteins: { type: String },
-                carbons: { type: String },
-                fat: { type: String },
-            },
-        ],
-        supper: [
-            {
-                productName: { type: String },
-                kcal: { type: String },
-                proteins: { type: String },
-                carbons: { type: String },
-                fat: { type: String },
-            },
-        ],
+    mealDate: {
+        type: String,
+        required: true,
     },
+    breakfast: [
+        {
+            productName: { type: String },
+            kcal: { type: String },
+            proteins: { type: String },
+            carbons: { type: String },
+            fat: { type: String },
+        },
+    ],
+    brunch: [
+        {
+            productName: { type: String },
+            kcal: { type: String },
+            proteins: { type: String },
+            carbons: { type: String },
+            fat: { type: String },
+        },
+    ],
+    dinner: [
+        {
+            productName: { type: String },
+            kcal: { type: String },
+            proteins: { type: String },
+            carbons: { type: String },
+            fat: { type: String },
+        },
+    ],
+    dessert: [
+        {
+            productName: { type: String },
+            kcal: { type: String },
+            proteins: { type: String },
+            carbons: { type: String },
+            fat: { type: String },
+        },
+    ],
+    supper: [
+        {
+            productName: { type: String },
+            kcal: { type: String },
+            proteins: { type: String },
+            carbons: { type: String },
+            fat: { type: String },
+        },
+    ],
+
     user: {
         type: Schema.Types.ObjectId,
         ref: "User",
