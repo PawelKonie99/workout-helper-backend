@@ -3,6 +3,7 @@ import { userModel } from "../../database/models/user";
 import { ResponseCode } from "../../enums/responseCode";
 import { tokenAuth } from "../../helpers/tokenAuth";
 import { ITodayProductsResponse } from "../../types/IFood.types";
+import { allUserProducts } from "./helpers/allUserProducts";
 import { sumMealProductsData } from "./helpers/sumMealProductsData";
 
 export const getTodayProducts = async (userToken: string): Promise<ITodayProductsResponse> => {
@@ -14,20 +15,11 @@ export const getTodayProducts = async (userToken: string): Promise<ITodayProduct
             return { code: ResponseCode.badRequest, success: false };
         }
 
-        //Szukamy wszystkich id posilkow uzytkownika
-        const userMealsIds = await userModel.findById(decodedUser.id).select("meals").exec();
+        const getAllUserProducts = await allUserProducts({ mealModel, userModel, decodedUser });
 
-        //tutaj otrzyujemy tablice z wszystkimi obiektami posilkow
-        const allUserProducts = await Promise.all(
-            userMealsIds.meals.map(async (mealId) => {
-                const workout = await mealModel.findById(mealId);
+        const todayUserProducts = getAllUserProducts.find(({ allDayMeals }) => allDayMeals.mealDate === date);
 
-                return workout;
-            })
-        );
-
-        const todayUserProducts = allUserProducts.find(({ allDayMeals }) => allDayMeals.mealDate === date);
-
+        console.log("todayUserProducts", todayUserProducts);
         const summedProductsData = {
             breakfast: sumMealProductsData(todayUserProducts, "breakfast"),
             brunch: sumMealProductsData(todayUserProducts, "brunch"),
@@ -56,8 +48,12 @@ export const getTodayProducts = async (userToken: string): Promise<ITodayProduct
             };
         }
 
+        console.log("todayUserProducts", todayUserProducts);
+
         return { code: ResponseCode.success, success: true, todayUserProducts, dailySummary };
     } catch (error) {
+        console.log(error);
+
         return { code: ResponseCode.badRequest, success: false };
     }
 };

@@ -4,6 +4,7 @@ import { userModel } from "../../database/models/user";
 import { ResponseCode } from "../../enums/responseCode";
 import { tokenAuth } from "../../helpers/tokenAuth";
 import { IProductPayload, ISaveProductResponse } from "../../types/IFood.types";
+import { allUserProducts } from "./helpers/allUserProducts";
 import { saveProperMeal } from "./helpers/saveProperMeal";
 
 dotenv.config();
@@ -22,20 +23,10 @@ export const saveProductToDb = async (
         const date = new Date().toLocaleDateString();
         // const date = new Date(Date.now() - 86400000).toLocaleDateString();
 
-        //Szukamy wszystkich id posilkow uzytkownika
-        const userMealsIds = await userModel.findById(decodedUser.id).select("meals").exec();
-
-        //tutaj otrzyujemy tablice z wszystkimi obiektami posilkow
-        const allUserProducts = await Promise.all(
-            userMealsIds.meals.map(async (mealId) => {
-                const workout = await mealModel.findById(mealId);
-
-                return workout;
-            })
-        );
+        const getAllUserProducts = await allUserProducts({ mealModel, userModel, decodedUser });
 
         //Szukamy posilkow z dzisiejszego dnia
-        const isAllDayMealFound = allUserProducts.find(
+        const isAllDayMealFound = getAllUserProducts.find(
             (allProducts) => allProducts?.allDayMeals?.mealDate === date
         );
 

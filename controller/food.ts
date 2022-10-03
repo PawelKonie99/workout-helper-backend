@@ -1,5 +1,6 @@
 import * as router from "express";
 import { Request, Response } from "express";
+import { deleteProductFromDb } from "../service/foodService/deleteProductFromDb";
 import { getAllProducts } from "../service/foodService/getAllProducts";
 import { getTodayProducts } from "../service/foodService/getTodayProducts";
 import { saveProductToDb } from "../service/foodService/saveProductToDb";
@@ -19,6 +20,16 @@ foodRouter.get("/foodProduct", async (req: Request, res: Response) => {
     const { code, success, allUserProducts } = userProducts;
 
     return res.status(code).json({ code: code, allUserProducts, success });
+});
+
+foodRouter.delete("/foodProduct/:id", async (req: Request, res: Response) => {
+    const productId = req.params.id;
+
+    const userToken = req.headers.authorization;
+    const deleteProductStatus = await deleteProductFromDb(userToken, productId);
+    // const { code, success, allUserProducts } = userProducts;
+
+    // return res.status(code).json({ code: code, allUserProducts, success });
 });
 
 foodRouter.get("/foodProduct/today", async (req: Request, res: Response) => {
