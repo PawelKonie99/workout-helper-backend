@@ -12,7 +12,7 @@ export const sumMealProductsData = (
         fat: 0,
     };
 
-    todayUserProducts.allDayMeals[timeOfMeal].forEach((product) => {
+    todayUserProducts[timeOfMeal].forEach((product) => {
         sumOfProductsData.carbons = sumOfProductsData.carbons + Number(product.carbons);
         sumOfProductsData.kcal = sumOfProductsData.kcal + Number(product.kcal);
         sumOfProductsData.proteins = sumOfProductsData.proteins + Number(product.proteins);

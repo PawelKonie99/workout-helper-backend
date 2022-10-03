@@ -1,14 +1,13 @@
 import { mealModel } from "../../database/models/meal";
-import { userModel } from "../../database/models/user";
 import { ResponseCode } from "../../enums/responseCode";
 import { tokenAuth } from "../../helpers/tokenAuth";
-import { IAllProductsResponse } from "../../types/IFood.types";
-import { allUserProducts } from "./helpers/allUserProducts";
+import { IDeleteProductResponse } from "../../types/IFood.types";
 
 export const deleteProductFromDb = async (
     userToken: string,
+    allDayMealsId: string,
     productId: string
-): Promise<IAllProductsResponse> => {
+): Promise<IDeleteProductResponse> => {
     try {
         const decodedUser = tokenAuth(userToken);
 
@@ -16,36 +15,17 @@ export const deleteProductFromDb = async (
             return { code: ResponseCode.badRequest, success: false };
         }
 
-        ///
-
-        const test2 = await mealModel.find({ "allDayMeals.breakfast._id": productId });
-
-        // const res = await mealModel.findByIdAndUpdate(
-        //     productId,
-        //     { $pull: { "allDayMeals.breakfast": { _id: productId } } },
-        //     { safe: true, upsert: true }
-        // );
-
-        const res = mealModel.findByIdAndUpdate(
-            { _id: "633b1aef0b3c0dc28c15015f" },
-            { $pull: { "allDayMeals.breakfast": { _id: "633b1aef0b3c0dc28c150160" } } }
+        const deletedProductResponse = await mealModel.updateOne(
+            { _id: allDayMealsId },
+            {
+                $pull: { breakfast: { _id: productId } },
+            }
         );
 
-        // const test2 = mealModel.aggregate([
-        //     {
-        //         $unwind: "$allDayMeals",
-        //     },
-        //     {
-        //         $match: {
-        //             "breakfast._id": productId,
-        //         },
-        //     },
-        // ]);
-        ////
-        console.log("res", res);
-        // console.log("test2", test2);
-
-        return { code: ResponseCode.success, success: true, allUserProducts: undefined };
+        return {
+            code: ResponseCode.success,
+            success: deletedProductResponse.modifiedCount > 0 ? true : false,
+        };
     } catch (error) {
         return { code: ResponseCode.badRequest, success: false };
     }

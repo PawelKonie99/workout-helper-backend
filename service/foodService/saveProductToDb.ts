@@ -26,9 +26,7 @@ export const saveProductToDb = async (
         const getAllUserProducts = await allUserProducts({ mealModel, userModel, decodedUser });
 
         //Szukamy posilkow z dzisiejszego dnia
-        const isAllDayMealFound = getAllUserProducts.find(
-            (allProducts) => allProducts?.allDayMeals?.mealDate === date
-        );
+        const isAllDayMealFound = getAllUserProducts.find((allProducts) => allProducts?.mealDate === date);
 
         //Jezeli posilkow z danego dnia nie ma w bazie to wtedy tworzymy pusty obiekt
         if (!isAllDayMealFound) {
@@ -37,18 +35,16 @@ export const saveProductToDb = async (
             //ktory posilek przyjdzie w body requesta tego bedziemy updateowac
             const { typeOfMeal, kcal, proteins, carbons, fat, productName } = productPayload;
             const newAllDayMeal = new mealModel({
-                allDayMeals: {
-                    mealDate: date,
-                    breakfast: [],
-                    brunch: [],
-                    dinner: [],
-                    dessert: [],
-                    supper: [],
-                },
+                mealDate: date,
+                breakfast: [],
+                brunch: [],
+                dinner: [],
+                dessert: [],
+                supper: [],
             });
 
             //Do pustego obiektu dodajemy to co chcial dodac uzytkownik
-            newAllDayMeal.allDayMeals[typeOfMeal].push({
+            newAllDayMeal[typeOfMeal].push({
                 productName,
                 kcal: kcal.toString(),
                 proteins: proteins.toString(),

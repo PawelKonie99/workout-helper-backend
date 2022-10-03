@@ -15,7 +15,7 @@ export const saveProperMeal = async (
             //TO mozna rozbic do osobnej funkcji w sensie to findByIdAndUpdate. bo sie powtarza tutaj
             await mealModel.findByIdAndUpdate(id, {
                 $push: {
-                    "allDayMeals.breakfast": {
+                    breakfast: {
                         kcal,
                         proteins,
                         carbons,
@@ -28,7 +28,7 @@ export const saveProperMeal = async (
         case MEAL_TYPES.BRUNCH:
             await mealModel.findByIdAndUpdate(id, {
                 $push: {
-                    "allDayMeals.brunch": {
+                    brunch: {
                         kcal,
                         proteins,
                         carbons,
@@ -41,7 +41,7 @@ export const saveProperMeal = async (
         case MEAL_TYPES.DINNER:
             await mealModel.findByIdAndUpdate(id, {
                 $push: {
-                    "allDayMeals.dinner": {
+                    dinner: {
                         kcal,
                         proteins,
                         carbons,
@@ -54,7 +54,7 @@ export const saveProperMeal = async (
         case MEAL_TYPES.DESSERT:
             await mealModel.findByIdAndUpdate(id, {
                 $push: {
-                    "allDayMeals.dessert": {
+                    dessert: {
                         kcal,
                         proteins,
                         carbons,
@@ -67,7 +67,7 @@ export const saveProperMeal = async (
         case MEAL_TYPES.SUPPER:
             await mealModel.findByIdAndUpdate(id, {
                 $push: {
-                    "allDayMeals.supper": {
+                    supper: {
                         kcal,
                         proteins,
                         carbons,

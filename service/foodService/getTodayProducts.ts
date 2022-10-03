@@ -17,9 +17,8 @@ export const getTodayProducts = async (userToken: string): Promise<ITodayProduct
 
         const getAllUserProducts = await allUserProducts({ mealModel, userModel, decodedUser });
 
-        const todayUserProducts = getAllUserProducts.find(({ allDayMeals }) => allDayMeals.mealDate === date);
+        const todayUserProducts = getAllUserProducts.find(({ mealDate }) => mealDate === date);
 
-        console.log("todayUserProducts", todayUserProducts);
         const summedProductsData = {
             breakfast: sumMealProductsData(todayUserProducts, "breakfast"),
             brunch: sumMealProductsData(todayUserProducts, "brunch"),

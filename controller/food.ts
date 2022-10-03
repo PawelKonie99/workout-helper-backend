@@ -6,30 +6,12 @@ import { getTodayProducts } from "../service/foodService/getTodayProducts";
 import { saveProductToDb } from "../service/foodService/saveProductToDb";
 export const foodRouter = router.Router();
 
-foodRouter.post("/foodProduct", async (req: Request, res: Response) => {
-    const userToken = req.headers.authorization;
-    const savedProduct = await saveProductToDb(req.body, userToken);
-    const { code, message, success } = savedProduct;
-
-    return res.status(code).json({ code: code, message, success });
-});
-
 foodRouter.get("/foodProduct", async (req: Request, res: Response) => {
     const userToken = req.headers.authorization;
     const userProducts = await getAllProducts(userToken);
     const { code, success, allUserProducts } = userProducts;
 
-    return res.status(code).json({ code: code, allUserProducts, success });
-});
-
-foodRouter.delete("/foodProduct/:id", async (req: Request, res: Response) => {
-    const productId = req.params.id;
-
-    const userToken = req.headers.authorization;
-    const deleteProductStatus = await deleteProductFromDb(userToken, productId);
-    // const { code, success, allUserProducts } = userProducts;
-
-    // return res.status(code).json({ code: code, allUserProducts, success });
+    return res.status(code).json({ code, allUserProducts, success });
 });
 
 foodRouter.get("/foodProduct/today", async (req: Request, res: Response) => {
@@ -37,5 +19,24 @@ foodRouter.get("/foodProduct/today", async (req: Request, res: Response) => {
     const userProducts = await getTodayProducts(userToken);
     const { code, success, todayUserProducts, dailySummary } = userProducts;
 
-    return res.status(code).json({ code: code, todayUserProducts, success, dailySummary });
+    return res.status(code).json({ code, todayUserProducts, success, dailySummary });
+});
+
+foodRouter.post("/foodProduct", async (req: Request, res: Response) => {
+    const userToken = req.headers.authorization;
+    const savedProduct = await saveProductToDb(req.body, userToken);
+    const { code, message, success } = savedProduct;
+
+    return res.status(code).json({ code, message, success });
+});
+
+foodRouter.delete("/foodProduct/:allDayMealsId/:productId", async (req: Request, res: Response) => {
+    const allDayMealsId = req.params.allDayMealsId;
+    const productId = req.params.productId;
+
+    const userToken = req.headers.authorization;
+    const deletedProductResponse = await deleteProductFromDb(userToken, allDayMealsId, productId);
+    const { code, success } = deletedProductResponse;
+
+    return res.status(code).json({ code, success });
 });
