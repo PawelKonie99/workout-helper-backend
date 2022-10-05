@@ -2,6 +2,7 @@ import * as router from "express";
 import { Request, Response } from "express";
 import { deleteProductFromDb } from "../service/foodService/deleteProductFromDb";
 import { getAllProducts } from "../service/foodService/getAllProducts";
+import { getMealHistory } from "../service/foodService/getMealHistory";
 import { getTodayProducts } from "../service/foodService/getTodayProducts";
 import { saveProductToDb } from "../service/foodService/saveProductToDb";
 export const foodRouter = router.Router();
@@ -12,6 +13,14 @@ foodRouter.get("/foodProduct", async (req: Request, res: Response) => {
     const { code, success, allUserProducts } = userProducts;
 
     return res.status(code).json({ code, allUserProducts, success });
+});
+
+foodRouter.get("/foodProduct/history", async (req: Request, res: Response) => {
+    const userToken = req.headers.authorization;
+    const userProducts = await getMealHistory(userToken);
+    const { code, success, mealHistory } = userProducts;
+
+    return res.status(code).json({ code, mealHistory, success });
 });
 
 foodRouter.get("/foodProduct/today", async (req: Request, res: Response) => {

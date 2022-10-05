@@ -2,14 +2,13 @@ import { mealModel } from "../../database/models/meal";
 import { userModel } from "../../database/models/user";
 import { ResponseCode } from "../../enums/responseCode";
 import { tokenAuth } from "../../helpers/tokenAuth";
-import { ITodayProductsResponse } from "../../types/IFood.types";
+import { IMealHistoryResponse } from "../../types/IFood.types";
 import { allUserProducts } from "./helpers/allUserProducts";
 import { fullDailyMealData } from "./helpers/fullDailyMealData";
 
-export const getTodayProducts = async (userToken: string): Promise<ITodayProductsResponse> => {
+export const getMealHistory = async (userToken: string): Promise<IMealHistoryResponse> => {
     try {
         const decodedUser = tokenAuth(userToken);
-        const date = new Date().toLocaleDateString();
 
         if (!decodedUser) {
             return { code: ResponseCode.badRequest, success: false };
@@ -17,24 +16,24 @@ export const getTodayProducts = async (userToken: string): Promise<ITodayProduct
 
         const getAllUserProducts = await allUserProducts({ mealModel, userModel, decodedUser });
 
-        const todayUserProducts = getAllUserProducts.find(({ mealDate }) => mealDate === date);
+        const mealHistory = getAllUserProducts.map((products) => {
+            const { dailySummary, breakfast, brunch, dinner, dessert, supper } = fullDailyMealData({
+                products,
+            });
 
-        const { dailySummary } = fullDailyMealData({
-            products: todayUserProducts,
-        });
-        if (!todayUserProducts) {
             return {
-                code: ResponseCode.success,
-                success: true,
-                todayUserProducts: undefined,
-                dailySummary: undefined,
+                mealDate: products.mealDate,
+                dailySummary,
+                breakfast,
+                brunch,
+                dinner,
+                dessert,
+                supper,
             };
-        }
+        });
 
-        return { code: ResponseCode.success, success: true, todayUserProducts, dailySummary };
+        return { code: ResponseCode.success, success: true, mealHistory };
     } catch (error) {
-        console.log(error);
-
         return { code: ResponseCode.badRequest, success: false };
     }
 };

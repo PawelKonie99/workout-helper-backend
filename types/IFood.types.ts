@@ -60,9 +60,30 @@ export interface ITodayProducts {
     supper: IDatabaseProduct[];
 }
 
+export interface IMealHistoryResponse {
+    mealHistory?: {
+        dailySummary: IProductsSummary;
+        mealDate: string;
+        breakfast: IMealMacros;
+        brunch: IMealMacros;
+        dinner: IMealMacros;
+        dessert: IMealMacros;
+        supper: IMealMacros;
+    }[];
+    code: ResponseCode;
+    success: boolean;
+}
+
 export interface IProductsSummary {
     totalKcal: number;
     totalProteins: number;
     totalFat: number;
     totalCarbons: number;
+}
+
+interface IMealMacros {
+    kcal: number;
+    proteins: number;
+    carbons: number;
+    fat: number;
 }
