@@ -15,6 +15,20 @@ export interface ISaveWorkoutResponse {
     success: boolean;
 }
 
+export interface IAllWorkoutOptionsResponse {
+    code: ResponseCode;
+    success: boolean;
+    exercise?: IWorkoutOption[];
+    weight?: IWorkoutOption[];
+    reps?: IWorkoutOption[];
+    series?: IWorkoutOption[];
+}
+
+interface IWorkoutOption {
+    value: string;
+    label: string;
+}
+
 export interface IAllWorkoutsResponse {
     code: ResponseCode;
     success: boolean;
