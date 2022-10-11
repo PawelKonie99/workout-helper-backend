@@ -37,7 +37,7 @@ workoutRouter.get("/workouts/best", async (req: Request, res: Response) => {
     const userToken = req.headers.authorization;
 
     const bestExercise = await getBestExercise(userToken, "Wyciskanie na lawce plaskiej");
-    const { code, success, filteredExerciseArray } = bestExercise;
+    const { code, success, weightRecord } = bestExercise;
 
-    return res.status(code).json({ code, success, filteredExerciseArray });
+    return res.status(code).json({ code, success, weightRecord });
 });
