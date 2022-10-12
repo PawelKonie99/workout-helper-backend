@@ -49,5 +49,12 @@ export interface IExerciseByName {
 export interface IBestExerciseResponse {
     code: ResponseCode;
     success: boolean;
-    weightRecord?: string;
+    exerciseWithRecord?: {
+        workoutData: {
+            exerciseName: string;
+            repsQuantity: number;
+            seriesQuantity: number;
+            weightQuantity: number;
+        };
+    };
 }

@@ -4,7 +4,6 @@ import { IBestExerciseResponse, IExerciseByName } from "../../types/IWorkout.typ
 import { tokenAuth } from "../../helpers/tokenAuth";
 import { workoutModel } from "../../database/models/workout";
 import { userModel } from "../../database/models/user";
-import _ from "lodash";
 import { transformNamedExercise } from "./helpers/filterNamedExercise";
 dotenv.config();
 
@@ -50,14 +49,29 @@ export const getBestExercise = async (
             })
         )) as IExerciseByName[][];
 
-        const filteredExerciseArray = transformNamedExercise(allUserExerciseByName);
+        const transformedExerciseArray = transformNamedExercise(allUserExerciseByName);
 
-        const weightRecord = _.maxBy(filteredExerciseArray, "workoutData.weightQuantity");
+        const weightRecord = Math.max(
+            ...transformedExerciseArray.map(({ workoutData: { weightQuantity } }) => weightQuantity)
+        );
+
+        //Rekord ciezaru moze powtarzac sie w kilku cwiczeniach
+        const exercisesWithWeightRecord = transformedExerciseArray.filter(
+            ({ workoutData: { weightQuantity } }) => Number(weightQuantity) === weightRecord
+        );
+
+        //Tutaj szukamy najlepszego cwiczenia z tych ktore sa juz odfiltrowane
+        const exerciseWithRecord = exercisesWithWeightRecord.reduce((previousValue, currentValue) =>
+            previousValue.workoutData.repsQuantity * previousValue.workoutData.seriesQuantity >
+            currentValue.workoutData.repsQuantity * currentValue.workoutData.seriesQuantity
+                ? previousValue
+                : currentValue
+        );
 
         return {
             code: ResponseCode.success,
             success: true,
-            weightRecord: weightRecord.workoutData.weightQuantity.toString(),
+            exerciseWithRecord,
         };
     } catch (error) {
         return { code: ResponseCode.badRequest, success: false };
