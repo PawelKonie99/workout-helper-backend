@@ -7,7 +7,7 @@ import { getTodayProducts } from "../service/foodService/getTodayProducts";
 import { saveProductToDb } from "../service/foodService/saveProductToDb";
 export const foodRouter = router.Router();
 
-foodRouter.get("/foodProduct", async (req: Request, res: Response) => {
+foodRouter.get("/food", async (req: Request, res: Response) => {
     const userToken = req.headers.authorization;
     const userProducts = await getAllProducts(userToken);
     const { code, success, allUserProducts } = userProducts;
@@ -15,7 +15,7 @@ foodRouter.get("/foodProduct", async (req: Request, res: Response) => {
     return res.status(code).json({ code, allUserProducts, success });
 });
 
-foodRouter.get("/foodProduct/history", async (req: Request, res: Response) => {
+foodRouter.get("/food/history", async (req: Request, res: Response) => {
     const userToken = req.headers.authorization;
     const userProducts = await getMealHistory(userToken);
     const { code, success, mealHistory } = userProducts;
@@ -23,7 +23,7 @@ foodRouter.get("/foodProduct/history", async (req: Request, res: Response) => {
     return res.status(code).json({ code, mealHistory, success });
 });
 
-foodRouter.get("/foodProduct/today", async (req: Request, res: Response) => {
+foodRouter.get("/food/today", async (req: Request, res: Response) => {
     const userToken = req.headers.authorization;
     const userProducts = await getTodayProducts(userToken);
     const { code, success, todayUserProducts, dailySummary } = userProducts;
@@ -31,7 +31,7 @@ foodRouter.get("/foodProduct/today", async (req: Request, res: Response) => {
     return res.status(code).json({ code, todayUserProducts, success, dailySummary });
 });
 
-foodRouter.post("/foodProduct", async (req: Request, res: Response) => {
+foodRouter.post("/food", async (req: Request, res: Response) => {
     const userToken = req.headers.authorization;
     const savedProduct = await saveProductToDb(req.body, userToken);
     const { code, message, success } = savedProduct;
@@ -39,7 +39,7 @@ foodRouter.post("/foodProduct", async (req: Request, res: Response) => {
     return res.status(code).json({ code, message, success });
 });
 
-foodRouter.delete("/foodProduct/:allDayMealsId/:productId", async (req: Request, res: Response) => {
+foodRouter.delete("/food/:allDayMealsId/:productId", async (req: Request, res: Response) => {
     const allDayMealsId = req.params.allDayMealsId;
     const productId = req.params.productId;
 
