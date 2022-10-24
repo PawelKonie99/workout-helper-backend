@@ -3,6 +3,7 @@ import { ResponseCode } from "../enums/responseCode";
 export interface IUserCredentials {
     username: string;
     password: string;
+    isTrainer: boolean;
 }
 
 export interface IRegisterResponse {

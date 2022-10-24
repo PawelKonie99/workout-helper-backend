@@ -4,6 +4,7 @@ import uniqueValidator from "mongoose-unique-validator";
 export interface IUserSchema extends mongoose.Document {
     username: string;
     passwordHash: string;
+    isTrainer: boolean;
     workouts: {
         type?: mongoose.Types.ObjectId;
         ref?: "Workout";
@@ -25,6 +26,10 @@ const userSchema = new mongoose.Schema<IUserSchema>({
         type: String,
         required: true,
         minlength: 3,
+    },
+    isTrainer: {
+        type: Boolean,
+        required: true,
     },
     workouts: [
         {

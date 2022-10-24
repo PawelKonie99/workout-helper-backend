@@ -19,17 +19,18 @@ export const getTodayProducts = async (userToken: string): Promise<ITodayProduct
 
         const todayUserProducts = getAllUserProducts.find(({ mealDate }) => mealDate === date);
 
-        const { dailySummary } = fullDailyMealData({
-            products: todayUserProducts,
-        });
         if (!todayUserProducts) {
             return {
-                code: ResponseCode.success,
+                code: ResponseCode.noContent,
                 success: true,
                 todayUserProducts: undefined,
                 dailySummary: undefined,
             };
         }
+
+        const { dailySummary } = fullDailyMealData({
+            products: todayUserProducts,
+        });
 
         return { code: ResponseCode.success, success: true, todayUserProducts, dailySummary };
     } catch (error) {
