@@ -35,20 +35,22 @@ export interface IDeleteProductResponse {
 export interface IAllProductsResponse {
     code: ResponseCode;
     success: boolean;
-    allUserProducts?: {
-        mealDate: string;
-        breakfast: IDatabaseProduct[];
-        brunch: IDatabaseProduct[];
-        dinner: IDatabaseProduct[];
-        dessert: IDatabaseProduct[];
-        supper: IDatabaseProduct[];
-    }[];
+    allUserProducts:
+        | {
+              mealDate: string;
+              breakfast: IDatabaseProduct[];
+              brunch: IDatabaseProduct[];
+              dinner: IDatabaseProduct[];
+              dessert: IDatabaseProduct[];
+              supper: IDatabaseProduct[];
+          }[]
+        | [];
 }
 export interface ITodayProductsResponse {
     code: ResponseCode;
     success: boolean;
-    todayUserProducts?: ITodayProducts;
-    dailySummary?: IProductsSummary;
+    todayUserProducts: ITodayProducts | Record<string, never>;
+    dailySummary: IProductsSummary | Record<string, never>;
 }
 
 export interface ITodayProducts {
@@ -61,15 +63,17 @@ export interface ITodayProducts {
 }
 
 export interface IMealHistoryResponse {
-    mealHistory?: {
-        dailySummary: IProductsSummary;
-        mealDate: string;
-        breakfast: IMealMacros;
-        brunch: IMealMacros;
-        dinner: IMealMacros;
-        dessert: IMealMacros;
-        supper: IMealMacros;
-    }[];
+    mealHistory:
+        | {
+              dailySummary: IProductsSummary;
+              mealDate: string;
+              breakfast: IMealMacros;
+              brunch: IMealMacros;
+              dinner: IMealMacros;
+              dessert: IMealMacros;
+              supper: IMealMacros;
+          }[]
+        | [];
     code: ResponseCode;
     success: boolean;
 }

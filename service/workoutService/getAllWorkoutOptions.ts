@@ -9,7 +9,14 @@ export const getAllWorkoutOptions = async (userToken: string): Promise<IAllWorko
     try {
         const decodedUser = tokenAuth(userToken);
         if (!decodedUser) {
-            return { code: ResponseCode.badRequest, success: false };
+            return {
+                code: ResponseCode.badRequest,
+                success: false,
+                exercise: [],
+                weight: [],
+                reps: [],
+                series: [],
+            };
         }
 
         return {
@@ -21,6 +28,13 @@ export const getAllWorkoutOptions = async (userToken: string): Promise<IAllWorko
             weight: WEIGHT_QUANTITY,
         };
     } catch (error) {
-        return { code: ResponseCode.badRequest, success: false };
+        return {
+            code: ResponseCode.badRequest,
+            success: false,
+            exercise: [],
+            weight: [],
+            reps: [],
+            series: [],
+        };
     }
 };

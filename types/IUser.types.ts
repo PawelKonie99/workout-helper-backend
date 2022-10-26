@@ -15,10 +15,13 @@ export interface IRegisterResponse {
 export interface ILoginResponse {
     code: ResponseCode;
     message: string;
-    loggedUser?: {
-        username: string;
-        token: string;
-    };
+    loggedUser:
+        | {
+              username: string;
+              token: string;
+              isTrainer: boolean;
+          }
+        | Record<string, never>;
 }
 
 export interface IDecodedUser {

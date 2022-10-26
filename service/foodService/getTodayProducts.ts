@@ -12,7 +12,7 @@ export const getTodayProducts = async (userToken: string): Promise<ITodayProduct
         const date = new Date().toLocaleDateString();
 
         if (!decodedUser) {
-            return { code: ResponseCode.badRequest, success: false };
+            return { code: ResponseCode.badRequest, success: false, todayUserProducts: {}, dailySummary: {} };
         }
 
         const getAllUserProducts = await allUserProducts({ mealModel, userModel, decodedUser });
@@ -21,10 +21,10 @@ export const getTodayProducts = async (userToken: string): Promise<ITodayProduct
 
         if (!todayUserProducts) {
             return {
-                code: ResponseCode.noContent,
+                code: ResponseCode.success,
                 success: true,
-                todayUserProducts: undefined,
-                dailySummary: undefined,
+                todayUserProducts: {},
+                dailySummary: {},
             };
         }
 
@@ -36,6 +36,6 @@ export const getTodayProducts = async (userToken: string): Promise<ITodayProduct
     } catch (error) {
         console.log(error);
 
-        return { code: ResponseCode.badRequest, success: false };
+        return { code: ResponseCode.badRequest, success: false, todayUserProducts: {}, dailySummary: {} };
     }
 };
