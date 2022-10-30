@@ -13,6 +13,10 @@ export interface IUserSchema extends mongoose.Document {
         type: typeof Schema.Types.ObjectId;
         ref: "Meal";
     }[];
+    students: {
+        type: typeof Schema.Types.ObjectId;
+        ref: "User";
+    }[];
 }
 
 const userSchema = new mongoose.Schema<IUserSchema>({
@@ -41,6 +45,12 @@ const userSchema = new mongoose.Schema<IUserSchema>({
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Meal",
+        },
+    ],
+    students: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
         },
     ],
 });

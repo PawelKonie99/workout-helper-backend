@@ -5,6 +5,7 @@ import { userValidationRouter } from "./controller/userValidation";
 import { unknownRequest } from "./middlewares/unknowRequest";
 import { workoutRouter } from "./controller/workout";
 import { foodRouter } from "./controller/food";
+import { trainerRouter } from "./controller/trainer";
 export const app = express();
 
 connectToDb();
@@ -15,4 +16,5 @@ app.use(express.json());
 app.use("/", userValidationRouter);
 app.use("/", workoutRouter);
 app.use("/", foodRouter);
+app.use("/", trainerRouter);
 app.use(unknownRequest);

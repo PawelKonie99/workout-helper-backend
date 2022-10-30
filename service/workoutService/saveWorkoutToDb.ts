@@ -16,7 +16,7 @@ export const saveWorkoutToDb = async (
         const decodedUser = tokenAuth(userToken);
 
         if (!decodedUser) {
-            return { code: ResponseCode.badRequest, message: "User not found", success: false };
+            return { code: ResponseCode.success, message: "User not found", success: false }; //TODO poprawic kod na 200 chyba
         }
 
         const newWorkout = new workoutModel({
