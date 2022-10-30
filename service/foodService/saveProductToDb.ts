@@ -17,7 +17,7 @@ export const saveProductToDb = async (
         const decodedUser = tokenAuth(userToken);
 
         if (!decodedUser) {
-            return { code: ResponseCode.badRequest, message: "User not found", success: false };
+            return { code: ResponseCode.badRequest, message: "User not found", success: false }; //TODO poprawic kod na 200 chyba
         }
 
         const date = new Date().toLocaleDateString();

@@ -11,7 +11,7 @@ export const getMealHistory = async (userToken: string): Promise<IMealHistoryRes
         const decodedUser = tokenAuth(userToken);
 
         if (!decodedUser) {
-            return { code: ResponseCode.badRequest, success: false };
+            return { code: ResponseCode.badRequest, success: false, mealHistory: [] };
         }
 
         const getAllUserProducts = await allUserProducts({ mealModel, userModel, decodedUser });
@@ -34,6 +34,6 @@ export const getMealHistory = async (userToken: string): Promise<IMealHistoryRes
 
         return { code: ResponseCode.success, success: true, mealHistory };
     } catch (error) {
-        return { code: ResponseCode.badRequest, success: false };
+        return { code: ResponseCode.badRequest, success: false, mealHistory: [] };
     }
 };

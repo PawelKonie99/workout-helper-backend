@@ -12,29 +12,30 @@ export const getTodayProducts = async (userToken: string): Promise<ITodayProduct
         const date = new Date().toLocaleDateString();
 
         if (!decodedUser) {
-            return { code: ResponseCode.badRequest, success: false };
+            return { code: ResponseCode.badRequest, success: false, todayUserProducts: {}, dailySummary: {} };
         }
 
         const getAllUserProducts = await allUserProducts({ mealModel, userModel, decodedUser });
 
         const todayUserProducts = getAllUserProducts.find(({ mealDate }) => mealDate === date);
 
-        const { dailySummary } = fullDailyMealData({
-            products: todayUserProducts,
-        });
         if (!todayUserProducts) {
             return {
                 code: ResponseCode.success,
                 success: true,
-                todayUserProducts: undefined,
-                dailySummary: undefined,
+                todayUserProducts: {},
+                dailySummary: {},
             };
         }
+
+        const { dailySummary } = fullDailyMealData({
+            products: todayUserProducts,
+        });
 
         return { code: ResponseCode.success, success: true, todayUserProducts, dailySummary };
     } catch (error) {
         console.log(error);
 
-        return { code: ResponseCode.badRequest, success: false };
+        return { code: ResponseCode.badRequest, success: false, todayUserProducts: {}, dailySummary: {} };
     }
 };

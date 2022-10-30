@@ -10,13 +10,13 @@ export const getAllProducts = async (userToken: string): Promise<IAllProductsRes
         const decodedUser = tokenAuth(userToken);
 
         if (!decodedUser) {
-            return { code: ResponseCode.badRequest, success: false };
+            return { code: ResponseCode.badRequest, success: false, allUserProducts: [] };
         }
 
         const getAllUserProducts = await allUserProducts({ mealModel, userModel, decodedUser });
 
         return { code: ResponseCode.success, success: true, allUserProducts: getAllUserProducts };
     } catch (error) {
-        return { code: ResponseCode.badRequest, success: false };
+        return { code: ResponseCode.badRequest, success: false, allUserProducts: [] };
     }
 };

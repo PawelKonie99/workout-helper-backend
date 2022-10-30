@@ -4,6 +4,7 @@ import uniqueValidator from "mongoose-unique-validator";
 export interface IUserSchema extends mongoose.Document {
     username: string;
     passwordHash: string;
+    isTrainer: boolean;
     workouts: {
         type?: mongoose.Types.ObjectId;
         ref?: "Workout";
@@ -11,6 +12,10 @@ export interface IUserSchema extends mongoose.Document {
     meals: {
         type: typeof Schema.Types.ObjectId;
         ref: "Meal";
+    }[];
+    students: {
+        type: typeof Schema.Types.ObjectId;
+        ref: "User";
     }[];
 }
 
@@ -26,6 +31,10 @@ const userSchema = new mongoose.Schema<IUserSchema>({
         required: true,
         minlength: 3,
     },
+    isTrainer: {
+        type: Boolean,
+        required: true,
+    },
     workouts: [
         {
             type: mongoose.Schema.Types.ObjectId,
@@ -36,6 +45,12 @@ const userSchema = new mongoose.Schema<IUserSchema>({
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Meal",
+        },
+    ],
+    students: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
         },
     ],
 });
