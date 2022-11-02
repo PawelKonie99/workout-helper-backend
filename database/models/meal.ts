@@ -1,4 +1,4 @@
-import { Schema, model, Document } from "mongoose";
+import { Schema, model, Document, Types } from "mongoose";
 import uniqueValidator from "mongoose-unique-validator";
 
 export interface IMealSchema extends Document {
@@ -9,7 +9,7 @@ export interface IMealSchema extends Document {
     dessert: [{ productName: string; kcal: string; proteins: string; carbons: string; fat: string }];
     supper: [{ productName: string; kcal: string; proteins: string; carbons: string; fat: string }];
     user: {
-        type: typeof Schema.Types.ObjectId;
+        type: Types.ObjectId;
         ref: "User";
     };
 }

@@ -1,25 +1,29 @@
-import mongoose, { Schema } from "mongoose";
+import { model, Schema, Types } from "mongoose";
 import uniqueValidator from "mongoose-unique-validator";
 
-export interface IUserSchema extends mongoose.Document {
+export interface IUserSchema extends Document {
     username: string;
     passwordHash: string;
     isTrainer: boolean;
     workouts: {
-        type?: mongoose.Types.ObjectId;
+        type?: Types.ObjectId;
         ref?: "Workout";
     }[];
     meals: {
-        type: typeof Schema.Types.ObjectId;
+        type: Types.ObjectId;
         ref: "Meal";
     }[];
-    students: {
-        type: typeof Schema.Types.ObjectId;
-        ref: "User";
-    }[];
+    student: {
+        type?: Types.ObjectId;
+        ref?: "Student";
+    };
+    trainer: {
+        type?: Types.ObjectId;
+        ref?: "Trainer";
+    };
 }
 
-const userSchema = new mongoose.Schema<IUserSchema>({
+const userSchema = new Schema<IUserSchema>({
     username: {
         type: String,
         unique: true,
@@ -37,22 +41,24 @@ const userSchema = new mongoose.Schema<IUserSchema>({
     },
     workouts: [
         {
-            type: mongoose.Schema.Types.ObjectId,
+            type: Schema.Types.ObjectId,
             ref: "Workout",
         },
     ],
     meals: [
         {
-            type: mongoose.Schema.Types.ObjectId,
+            type: Schema.Types.ObjectId,
             ref: "Meal",
         },
     ],
-    students: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
-        },
-    ],
+    student: {
+        type: Types.ObjectId,
+        ref: "Student",
+    },
+    trainer: {
+        type: Types.ObjectId,
+        ref: "Trainer",
+    },
 });
 
 userSchema.plugin(uniqueValidator);
@@ -65,4 +71,4 @@ userSchema.set("toJSON", {
     },
 });
 
-export const userModel = mongoose.model<IUserSchema>("User", userSchema);
+export const userModel = model<IUserSchema>("User", userSchema);

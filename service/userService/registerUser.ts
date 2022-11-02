@@ -4,6 +4,8 @@ import { ResponseCode } from "../../enums/responseCode";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 import { checkPasswordLenght } from "./helpers/userValiation";
+import { trainerModel } from "../../database/models/trainer";
+import { studentModel } from "../../database/models/student";
 dotenv.config();
 
 export const registerUser = async (userCredentails: IUserCredentials): Promise<IRegisterResponse> => {
@@ -29,7 +31,29 @@ export const registerUser = async (userCredentails: IUserCredentials): Promise<I
             isTrainer,
         });
 
-        await newUser.save();
+        const savedUser = await newUser.save();
+
+        if (isTrainer) {
+            const newTrainer = new trainerModel({
+                user: savedUser.id,
+            });
+            await newTrainer.save();
+
+            await userModel.findByIdAndUpdate(savedUser.id, {
+                trainer: newTrainer.id,
+            });
+        } else {
+            const newStudent = new studentModel({
+                user: savedUser.id,
+                studentName: username,
+            });
+
+            await newStudent.save();
+
+            await userModel.findByIdAndUpdate(savedUser.id, {
+                student: newStudent.id,
+            });
+        }
 
         return { code: ResponseCode.success, message: "User successfully created", success: true };
     } catch (error) {
