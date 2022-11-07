@@ -18,19 +18,19 @@ export const addStudent = async (
         const decodedUser = tokenAuth(userToken);
 
         if (!decodedUser) {
-            return { code: ResponseCode.badRequest, message: "User not found", success: false }; //TODO poprawic kod na 200 chyba
+            return { code: ResponseCode.success, message: "User not found", success: false };
         }
 
         const trainer = await getTrainerIdByUserId(decodedUser.id);
 
         if (!trainer) {
-            return { code: ResponseCode.badRequest, message: "Trainer not found", success: false }; //TODO poprawic kod na 200 chyba
+            return { code: ResponseCode.success, message: "Trainer not found", success: false };
         }
 
         const student = await getStudentIdByUserId(studentName);
 
         if (!student) {
-            return { code: ResponseCode.badRequest, message: "User not found", success: false };
+            return { code: ResponseCode.success, message: "User not found", success: false };
         }
 
         await trainerModel.findByIdAndUpdate(trainer, {
@@ -47,6 +47,8 @@ export const addStudent = async (
             success: true,
         };
     } catch (error) {
+        console.log("error", error);
+
         return { code: ResponseCode.badRequest, message: error, success: false };
     }
 };

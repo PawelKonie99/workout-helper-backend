@@ -5,8 +5,6 @@ import { getAllStudents } from "../service/trainerService/getAllStudents";
 export const trainerRouter = router.Router();
 
 trainerRouter.get("/trainer/student", async (req: Request, res: Response) => {
-    console.log("elo");
-
     const userToken = req.headers.authorization;
 
     const { code, allStudents, success } = await getAllStudents(userToken);
