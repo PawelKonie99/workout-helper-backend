@@ -1,14 +1,9 @@
 import { Types } from "mongoose";
 import { ResponseCode } from "../enums/responseCode";
+import { IWorkoutFields } from "./IWorkout.types";
 
 export interface IStudentPayload {
     studentName: string;
-}
-
-export interface IAddStudentResponse {
-    code: ResponseCode;
-    message: string;
-    success: boolean;
 }
 
 export interface IGetAllStudentsResponse {
@@ -24,4 +19,12 @@ export interface IGetAllStudentsResponse {
               id: string;
           }[]
         | [];
+}
+
+export interface IAddNewTrainingPlanPayload {
+    workoutData: IWorkoutFields[];
+    userData: {
+        id: string;
+        userName: string;
+    };
 }

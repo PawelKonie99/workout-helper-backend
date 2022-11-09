@@ -24,12 +24,6 @@ export interface IWorkoutFields {
     weightQuantity: string;
 }
 
-export interface ISaveWorkoutResponse {
-    code: ResponseCode;
-    message: string;
-    success: boolean;
-}
-
 export interface IAllWorkoutOptionsResponse {
     code: ResponseCode;
     success: boolean;

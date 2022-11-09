@@ -1,9 +1,10 @@
 import { model, Schema, Types } from "mongoose";
 import uniqueValidator from "mongoose-unique-validator";
+import { IWorkoutFields } from "../../types/IWorkout.types";
 
 export interface IStudentSchema extends Document {
-    workoutPlan: string;
     studentName: string;
+    workoutPlan: IWorkoutFields[];
     user: {
         type: Types.ObjectId;
         ref: "User";
@@ -15,10 +16,26 @@ export interface IStudentSchema extends Document {
 }
 
 const studentSchema = new Schema<IStudentSchema>({
-    workoutPlan: {
-        type: String,
-        minlength: 3,
-    },
+    workoutPlan: [
+        {
+            exerciseName: {
+                type: String,
+                required: true,
+            },
+            repsQuantity: {
+                type: String,
+                required: true,
+            },
+            seriesQuantity: {
+                type: String,
+                required: true,
+            },
+            weightQuantity: {
+                type: String,
+                required: true,
+            },
+        },
+    ],
     studentName: {
         type: String,
         minlength: 3,

@@ -6,12 +6,6 @@ export interface IUserCredentials {
     isTrainer: boolean;
 }
 
-export interface IRegisterResponse {
-    code: ResponseCode;
-    message: string;
-    success: boolean;
-}
-
 export interface ILoginResponse {
     code: ResponseCode;
     message: string;

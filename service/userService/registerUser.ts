@@ -1,4 +1,4 @@
-import { IUserCredentials, IRegisterResponse } from "../../types/IUser.types";
+import { IUserCredentials } from "../../types/IUser.types";
 import { userModel } from "../../database/models/user";
 import { ResponseCode } from "../../enums/responseCode";
 import bcrypt from "bcrypt";
@@ -6,9 +6,10 @@ import dotenv from "dotenv";
 import { checkPasswordLenght } from "./helpers/userValiation";
 import { trainerModel } from "../../database/models/trainer";
 import { studentModel } from "../../database/models/student";
+import { IStandardResponse } from "../../types/common.types";
 dotenv.config();
 
-export const registerUser = async (userCredentails: IUserCredentials): Promise<IRegisterResponse> => {
+export const registerUser = async (userCredentails: IUserCredentials): Promise<IStandardResponse> => {
     try {
         const { username, password, isTrainer } = userCredentails;
 

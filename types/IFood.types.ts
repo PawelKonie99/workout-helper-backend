@@ -21,12 +21,6 @@ export interface IDatabaseProduct {
     fat: string;
 }
 
-export interface ISaveProductResponse {
-    code: ResponseCode;
-    message: string;
-    success: boolean;
-}
-
 export interface IDeleteProductResponse {
     code: ResponseCode;
     success: boolean;

@@ -1,17 +1,18 @@
 import { ResponseCode } from "../../enums/responseCode";
 import dotenv from "dotenv";
 import { tokenAuth } from "../../helpers/tokenAuth";
-import { IAddStudentResponse, IStudentPayload } from "../../types/ITrainer.types";
+import { IStudentPayload } from "../../types/ITrainer.types";
 import { trainerModel } from "../../database/models/trainer";
 import { studentModel } from "../../database/models/student";
 import { getStudentIdByUserId } from "./helpers/getStudentIdByUserId";
 import { getTrainerIdByUserId } from "./helpers/getTrainerIdByUserId";
+import { IStandardResponse } from "../../types/common.types";
 dotenv.config();
 
 export const addStudent = async (
     studentPayload: IStudentPayload,
     userToken: string
-): Promise<IAddStudentResponse> => {
+): Promise<IStandardResponse> => {
     try {
         const { studentName } = studentPayload;
 

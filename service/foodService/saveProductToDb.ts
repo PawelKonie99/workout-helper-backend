@@ -3,7 +3,8 @@ import { mealModel } from "../../database/models/meal";
 import { userModel } from "../../database/models/user";
 import { ResponseCode } from "../../enums/responseCode";
 import { tokenAuth } from "../../helpers/tokenAuth";
-import { IProductPayload, ISaveProductResponse } from "../../types/IFood.types";
+import { IStandardResponse } from "../../types/common.types";
+import { IProductPayload } from "../../types/IFood.types";
 import { allUserProducts } from "./helpers/allUserProducts";
 import { saveProperMeal } from "./helpers/saveProperMeal";
 
@@ -12,7 +13,7 @@ dotenv.config();
 export const saveProductToDb = async (
     productPayload: IProductPayload,
     userToken: string
-): Promise<ISaveProductResponse> => {
+): Promise<IStandardResponse> => {
     try {
         const decodedUser = tokenAuth(userToken);
 
