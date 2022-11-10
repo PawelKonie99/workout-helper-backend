@@ -18,7 +18,7 @@ export const addNewTrainingPlan = async (
         } = newTrainingPayload;
 
         if (!decodedUser) {
-            return { code: ResponseCode.success, message: "User not found", success: false };
+            return { code: ResponseCode.unauthorized, message: "User not found", success: false };
         }
 
         await studentModel.findByIdAndUpdate(id, {

@@ -4,9 +4,10 @@ import { tokenAuth } from "../../helpers/tokenAuth";
 import { IStudentPayload } from "../../types/ITrainer.types";
 import { trainerModel } from "../../database/models/trainer";
 import { studentModel } from "../../database/models/student";
-import { getStudentIdByUserId } from "./helpers/getStudentIdByUserId";
-import { getTrainerIdByUserId } from "./helpers/getTrainerIdByUserId";
+
 import { IStandardResponse } from "../../types/common.types";
+import { getTrainerIdByUserId } from "../../helpers/getTrainerIdByUserId";
+import { getStudentIdByStudentName } from "../../helpers/getStudentIdByStudentName";
 dotenv.config();
 
 export const addStudent = async (
@@ -19,7 +20,7 @@ export const addStudent = async (
         const decodedUser = tokenAuth(userToken);
 
         if (!decodedUser) {
-            return { code: ResponseCode.success, message: "User not found", success: false };
+            return { code: ResponseCode.unauthorized, message: "User not found", success: false };
         }
 
         const trainer = await getTrainerIdByUserId(decodedUser.id);
@@ -28,7 +29,7 @@ export const addStudent = async (
             return { code: ResponseCode.success, message: "Trainer not found", success: false };
         }
 
-        const student = await getStudentIdByUserId(studentName);
+        const student = await getStudentIdByStudentName(studentName);
 
         if (!student) {
             return { code: ResponseCode.success, message: "User not found", success: false };

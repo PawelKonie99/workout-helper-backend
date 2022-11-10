@@ -9,7 +9,7 @@ export interface IUserCredentials {
 export interface ILoginResponse {
     code: ResponseCode;
     message: string;
-    loggedUser:
+    loggedUser?:
         | {
               username: string;
               token: string;

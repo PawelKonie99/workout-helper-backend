@@ -18,9 +18,8 @@ export const loginUser = async (userCredentails: IUserCredentials): Promise<ILog
 
         if (!registeredUser || !correctPassword) {
             return {
-                code: ResponseCode.success,
+                code: ResponseCode.unauthorized,
                 message: "Invalid username or password",
-                loggedUser: { username: "", token: "", isTrainer: false },
             };
         }
 
@@ -42,7 +41,6 @@ export const loginUser = async (userCredentails: IUserCredentials): Promise<ILog
         return {
             code: ResponseCode.badRequest,
             message: error,
-            loggedUser: { username: "", token: "", isTrainer: false },
         };
     }
 };

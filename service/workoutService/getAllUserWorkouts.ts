@@ -10,7 +10,7 @@ export const getAllUserWorkouts = async (userToken: string): Promise<IAllWorkout
     try {
         const decodedUser = tokenAuth(userToken);
         if (!decodedUser) {
-            return { code: ResponseCode.badRequest, success: false };
+            return { code: ResponseCode.unauthorized, success: false };
         }
 
         const userWorkoutsIds = await userModel.findById(decodedUser.id).select("workouts").exec();

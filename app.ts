@@ -6,6 +6,7 @@ import { unknownRequest } from "./middlewares/unknowRequest";
 import { workoutRouter } from "./controller/workout";
 import { foodRouter } from "./controller/food";
 import { trainerRouter } from "./controller/trainer";
+import { studentRouter } from "./controller/student";
 export const app = express();
 
 connectToDb();
@@ -17,4 +18,5 @@ app.use("/", userValidationRouter);
 app.use("/", workoutRouter);
 app.use("/", foodRouter);
 app.use("/", trainerRouter);
+app.use("/", studentRouter);
 app.use(unknownRequest);

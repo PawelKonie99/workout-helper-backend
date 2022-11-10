@@ -1,0 +1,27 @@
+import { userModel } from "../../database/models/user";
+import { ResponseCode } from "../../enums/responseCode";
+import { getStudentByUserId } from "../../helpers/getStudentByUserId";
+import { tokenAuth } from "../../helpers/tokenAuth";
+import dotenv from "dotenv";
+import { ITrainingPlanResponse } from "../../types/IStudent.types";
+dotenv.config();
+
+export const getTrainingPlan = async (userToken: string): Promise<ITrainingPlanResponse> => {
+    try {
+        const decodedUser = tokenAuth(userToken);
+
+        if (!decodedUser) {
+            return { code: ResponseCode.badRequest, success: false };
+        }
+
+        const { student } = await userModel.findById(decodedUser.id).select("student").exec();
+
+        const studentData = await getStudentByUserId(student.toString());
+
+        const workoutPlan = studentData.workoutPlan;
+
+        return { code: ResponseCode.success, success: true, workoutPlan };
+    } catch (error) {
+        return { code: ResponseCode.badRequest, success: false };
+    }
+};

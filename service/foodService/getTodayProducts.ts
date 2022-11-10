@@ -12,7 +12,7 @@ export const getTodayProducts = async (userToken: string): Promise<ITodayProduct
         const date = new Date().toLocaleDateString();
 
         if (!decodedUser) {
-            return { code: ResponseCode.badRequest, success: false, todayUserProducts: {}, dailySummary: {} };
+            return { code: ResponseCode.unauthorized, success: false };
         }
 
         const getAllUserProducts = await allUserProducts({ mealModel, userModel, decodedUser });
@@ -36,6 +36,6 @@ export const getTodayProducts = async (userToken: string): Promise<ITodayProduct
     } catch (error) {
         console.log(error);
 
-        return { code: ResponseCode.badRequest, success: false, todayUserProducts: {}, dailySummary: {} };
+        return { code: ResponseCode.badRequest, success: false };
     }
 };

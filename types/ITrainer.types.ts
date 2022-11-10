@@ -9,7 +9,7 @@ export interface IStudentPayload {
 export interface IGetAllStudentsResponse {
     code: ResponseCode;
     success: boolean;
-    allStudents:
+    allStudents?:
         | {
               user: {
                   type: Types.ObjectId;

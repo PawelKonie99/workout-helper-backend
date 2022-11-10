@@ -12,7 +12,7 @@ export const deleteProductFromDb = async (
         const decodedUser = tokenAuth(userToken);
 
         if (!decodedUser) {
-            return { code: ResponseCode.badRequest, success: false };
+            return { code: ResponseCode.unauthorized, success: false };
         }
 
         const deletedProductResponse = await mealModel.updateOne(

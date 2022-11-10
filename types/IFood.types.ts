@@ -29,7 +29,7 @@ export interface IDeleteProductResponse {
 export interface IAllProductsResponse {
     code: ResponseCode;
     success: boolean;
-    allUserProducts:
+    allUserProducts?:
         | {
               mealDate: string;
               breakfast: IDatabaseProduct[];
@@ -43,8 +43,8 @@ export interface IAllProductsResponse {
 export interface ITodayProductsResponse {
     code: ResponseCode;
     success: boolean;
-    todayUserProducts: ITodayProducts | Record<string, never>;
-    dailySummary: IProductsSummary | Record<string, never>;
+    todayUserProducts?: ITodayProducts | Record<string, never>;
+    dailySummary?: IProductsSummary | Record<string, never>;
 }
 
 export interface ITodayProducts {
@@ -57,7 +57,7 @@ export interface ITodayProducts {
 }
 
 export interface IMealHistoryResponse {
-    mealHistory:
+    mealHistory?:
         | {
               dailySummary: IProductsSummary;
               mealDate: string;
