@@ -18,9 +18,9 @@ export const getTrainingPlan = async (userToken: string): Promise<ITrainingPlanR
 
         const studentData = await getStudentByUserId(student.toString());
 
-        const workoutPlan = studentData.workoutPlan;
+        const trainingPlan = studentData.trainingPlan;
 
-        return { code: ResponseCode.success, success: true, workoutPlan };
+        return { code: ResponseCode.success, success: true, trainingPlan };
     } catch (error) {
         return { code: ResponseCode.badRequest, success: false };
     }

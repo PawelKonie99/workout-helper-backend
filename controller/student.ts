@@ -7,6 +7,6 @@ export const studentRouter = router.Router();
 studentRouter.get("/student/plan", async (req: Request, res: Response) => {
     const userToken = req.headers.authorization;
 
-    const { code, workoutPlan, success } = await getTrainingPlan(userToken);
-    return res.status(code).json({ code, workoutPlan, success });
+    const { code, trainingPlan, success } = await getTrainingPlan(userToken);
+    return res.status(code).json({ code, trainingPlan, success });
 });

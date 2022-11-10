@@ -4,7 +4,7 @@ import { IWorkoutFields } from "../../types/IWorkout.types";
 
 export interface IStudentSchema extends Document {
     studentName: string;
-    workoutPlan: IWorkoutFields[];
+    trainingPlan: IWorkoutFields[];
     user: {
         type: Types.ObjectId;
         ref: "User";
@@ -16,7 +16,7 @@ export interface IStudentSchema extends Document {
 }
 
 const studentSchema = new Schema<IStudentSchema>({
-    workoutPlan: [
+    trainingPlan: [
         {
             exerciseName: {
                 type: String,

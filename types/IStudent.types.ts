@@ -4,5 +4,5 @@ import { IWorkoutFields } from "./IWorkout.types";
 export interface ITrainingPlanResponse {
     code: ResponseCode;
     success: boolean;
-    workoutPlan?: IWorkoutFields[] | [];
+    trainingPlan?: IWorkoutFields[] | [];
 }

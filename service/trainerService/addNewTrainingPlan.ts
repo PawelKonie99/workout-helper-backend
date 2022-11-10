@@ -22,7 +22,7 @@ export const addNewTrainingPlan = async (
         }
 
         await studentModel.findByIdAndUpdate(id, {
-            workoutPlan: workoutData,
+            trainingPlan: workoutData,
         });
 
         return {
