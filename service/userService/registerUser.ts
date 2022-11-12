@@ -37,7 +37,9 @@ export const registerUser = async (userCredentails: IUserCredentials): Promise<I
         if (isTrainer) {
             const newTrainer = new trainerModel({
                 user: savedUser.id,
+                trainerName: username,
             });
+
             await newTrainer.save();
 
             await userModel.findByIdAndUpdate(savedUser.id, {

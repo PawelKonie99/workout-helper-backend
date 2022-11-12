@@ -22,3 +22,10 @@ export interface IDecodedUser {
     id: string;
     username: string;
 }
+
+export interface IUserDataResponse {
+    code: ResponseCode;
+    success: boolean;
+    username?: string;
+    trainerName?: string;
+}
