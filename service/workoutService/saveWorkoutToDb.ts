@@ -2,21 +2,19 @@ import { userModel } from "../../database/models/user";
 import { ResponseCode } from "../../enums/responseCode";
 import dotenv from "dotenv";
 import { workoutModel } from "../../database/models/workout";
-import { IWorkout, ISaveWorkoutResponse } from "../../types/IWorkout.types";
+import { IWorkout } from "../../types/IWorkout.types";
 import { tokenAuth } from "../../helpers/tokenAuth";
+import { IStandardResponse } from "../../types/common.types";
 dotenv.config();
 
-export const saveWorkoutToDb = async (
-    workout: IWorkout,
-    userToken: string
-): Promise<ISaveWorkoutResponse> => {
+export const saveWorkoutToDb = async (workout: IWorkout, userToken: string): Promise<IStandardResponse> => {
     try {
         const { workoutData } = workout;
 
         const decodedUser = tokenAuth(userToken);
 
         if (!decodedUser) {
-            return { code: ResponseCode.success, message: "User not found", success: false }; //TODO poprawic kod na 200 chyba
+            return { code: ResponseCode.unauthorized, message: "User not found", success: false };
         }
 
         const newWorkout = new workoutModel({

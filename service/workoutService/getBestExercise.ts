@@ -15,7 +15,7 @@ export const getBestExercise = async (
     try {
         const decodedUser = tokenAuth(userToken);
         if (!decodedUser) {
-            return { code: ResponseCode.badRequest, success: false, exerciseWithRecord: {} };
+            return { code: ResponseCode.unauthorized, success: false };
         }
 
         const userWorkoutsIds = await userModel.findById(decodedUser.id).select("workouts").exec();
@@ -74,6 +74,6 @@ export const getBestExercise = async (
             exerciseWithRecord,
         };
     } catch (error) {
-        return { code: ResponseCode.badRequest, success: false, exerciseWithRecord: {} };
+        return { code: ResponseCode.badRequest, success: false }; //TODO wywalic ten obiekt z errorow
     }
 };

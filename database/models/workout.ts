@@ -1,5 +1,5 @@
 import uniqueValidator from "mongoose-unique-validator";
-import { Schema, model, Document } from "mongoose";
+import { Schema, model, Document, Types } from "mongoose";
 import { IWorkoutFields } from "../../types/IWorkout.types";
 
 export interface IWorkoutSchema extends Document {
@@ -8,7 +8,7 @@ export interface IWorkoutSchema extends Document {
         workoutData: IWorkoutFields[];
     };
     user: {
-        type: typeof Schema.Types.ObjectId;
+        type: Types.ObjectId;
         ref: "User";
     };
 }
