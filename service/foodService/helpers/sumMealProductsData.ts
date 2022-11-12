@@ -1,10 +1,7 @@
+import { MEAL_TYPES } from "../../../enums/meal";
 import { ITodayProducts } from "../../../types/IFood.types";
 
-export const sumMealProductsData = (
-    todayUserProducts: ITodayProducts,
-    //TODO dac do enum
-    timeOfMeal: "breakfast" | "brunch" | "dinner" | "dessert" | "supper"
-) => {
+export const sumMealProductsData = (todayUserProducts: ITodayProducts, timeOfMeal: MEAL_TYPES) => {
     const sumOfProductsData = {
         kcal: 0,
         proteins: 0,

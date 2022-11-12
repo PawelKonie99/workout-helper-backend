@@ -85,3 +85,9 @@ interface IMealMacros {
     carbons: number;
     fat: number;
 }
+
+export interface IProductToDelete {
+    allDayMealsId: string;
+    productId: string;
+    typeOfMeal: MEAL_TYPES;
+}

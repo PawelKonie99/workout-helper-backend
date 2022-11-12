@@ -39,12 +39,9 @@ foodRouter.post("/food", async (req: Request, res: Response) => {
     return res.status(code).json({ code, message, success });
 });
 
-foodRouter.delete("/food/:allDayMealsId/:productId", async (req: Request, res: Response) => {
-    const allDayMealsId = req.params.allDayMealsId;
-    const productId = req.params.productId;
-
+foodRouter.delete("/food", async (req: Request, res: Response) => {
     const userToken = req.headers.authorization;
-    const deletedProductResponse = await deleteProductFromDb(userToken, allDayMealsId, productId);
+    const deletedProductResponse = await deleteProductFromDb(userToken, req.body);
     const { code, success } = deletedProductResponse;
 
     return res.status(code).json({ code, success });
