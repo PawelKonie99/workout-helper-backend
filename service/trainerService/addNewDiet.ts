@@ -6,13 +6,21 @@ import { addProductToDiet } from "./helpers/addProductToDiet";
 import { IStandardResponse } from "../../types/common.types";
 dotenv.config();
 
+interface IAddNewDiet {
+    studentId: string;
+    productPayload: IProductPayload;
+}
+
 //TODO pomyslec nad tym, zeby sprawdzac czy student nalezy do danego trenera
 export const addNewDiet = async (
-    studentId: string,
     userToken: string,
-    productPayload: IProductPayload
+    userAndProductData: IAddNewDiet
 ): Promise<IStandardResponse> => {
     try {
+        console.log(userAndProductData);
+
+        const { studentId, productPayload } = userAndProductData;
+
         const decodedUser = tokenAuth(userToken);
 
         if (!decodedUser) {
@@ -27,6 +35,8 @@ export const addNewDiet = async (
             success: true,
         };
     } catch (error) {
+        console.log("error", error);
+
         return { code: ResponseCode.badRequest, message: error, success: false };
     }
 };

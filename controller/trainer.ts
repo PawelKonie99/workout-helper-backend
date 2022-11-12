@@ -32,7 +32,7 @@ trainerRouter.post("/trainer/plan", async (req: Request, res: Response) => {
 trainerRouter.post("/trainer/diet", async (req: Request, res: Response) => {
     const userToken = req.headers.authorization;
 
-    const addedPlan = await addNewDiet("636fdba11975f3e4c27ff000", userToken, req.body);
+    const addedPlan = await addNewDiet(userToken, req.body);
     const { code, message, success } = addedPlan;
     return res.status(code).json({ code, message, success });
 });
