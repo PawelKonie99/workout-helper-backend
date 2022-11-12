@@ -21,8 +21,6 @@ export const deleteProductFromDb = async (
             success: deletedProductResponse > 0 ? true : false,
         };
     } catch (error) {
-        console.log("error", error);
-
         return { code: ResponseCode.badRequest, success: false };
     }
 };
