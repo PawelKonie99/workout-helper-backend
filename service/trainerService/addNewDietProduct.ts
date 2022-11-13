@@ -6,19 +6,17 @@ import { addProductToDiet } from "./helpers/addProductToDiet";
 import { IStandardResponse } from "../../types/common.types";
 dotenv.config();
 
-interface IAddNewDiet {
+interface IaddNewDietProduct {
     studentId: string;
     productPayload: IProductPayload;
 }
 
 //TODO pomyslec nad tym, zeby sprawdzac czy student nalezy do danego trenera
-export const addNewDiet = async (
+export const addNewDietProduct = async (
     userToken: string,
-    userAndProductData: IAddNewDiet
+    userAndProductData: IaddNewDietProduct
 ): Promise<IStandardResponse> => {
     try {
-        console.log(userAndProductData);
-
         const { studentId, productPayload } = userAndProductData;
 
         const decodedUser = tokenAuth(userToken);
