@@ -1,7 +1,8 @@
 import { Types } from "mongoose";
 import { MEAL_TYPES } from "../enums/meal";
 import { ResponseCode } from "../enums/responseCode";
-import { IWorkoutFields } from "./IWorkout.types";
+import { IMealMacros, IProductsSummary } from "./IFood.types";
+import { IUserWorkoutDataFromDatabase, IWorkoutFields } from "./IWorkout.types";
 
 export interface IStudentPayload {
     studentName: string;
@@ -33,4 +34,21 @@ export interface IAddNewTrainingPlanPayload {
 export interface IRemoveDietProductPayload {
     productId: string;
     typeOfMeal: MEAL_TYPES;
+}
+
+export interface IGetSingleStudentDataResponse {
+    code: ResponseCode;
+    success: boolean;
+    allUserWorkouts?: IUserWorkoutDataFromDatabase[] | [];
+    mealHistory?:
+        | {
+              dailySummary: IProductsSummary;
+              mealDate: string;
+              breakfast: IMealMacros;
+              brunch: IMealMacros;
+              dinner: IMealMacros;
+              dessert: IMealMacros;
+              supper: IMealMacros;
+          }[]
+        | [];
 }

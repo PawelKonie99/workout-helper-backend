@@ -19,12 +19,8 @@ export const getStudentDiet = async (
 
         const { diet } = await studentModel.findById(studentId).select("diet").exec();
 
-        console.log("diet", diet);
-
         return { code: ResponseCode.success, success: true, diet };
     } catch (error) {
-        console.log("error", error);
-
         return { code: ResponseCode.badRequest, success: false };
     }
 };

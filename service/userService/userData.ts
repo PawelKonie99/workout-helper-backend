@@ -21,13 +21,13 @@ export const getUserData = async (userToken: string): Promise<IUserDataResponse>
             const { student } = await userModel.findById(decodedUser.id).select("student").exec();
 
             const studentData = await getStudentByStudentId(student.toString());
-            const trainerData = await getTrainerByTrainerId(studentData.trainer.toString());
+            const trainerData = await getTrainerByTrainerId(studentData?.trainer?.toString());
 
             return {
                 code: ResponseCode.success,
                 success: true,
                 username: userData.username,
-                trainerName: trainerData.trainerName,
+                trainerName: trainerData?.trainerName,
             };
         }
 
@@ -37,6 +37,8 @@ export const getUserData = async (userToken: string): Promise<IUserDataResponse>
             username: userData.username,
         };
     } catch (error) {
+        console.log("error", error);
+
         return { code: ResponseCode.badRequest, success: false };
     }
 };

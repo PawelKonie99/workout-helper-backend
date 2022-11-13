@@ -4,6 +4,7 @@ import { addNewDietProduct } from "../service/trainerService/addNewDietProduct";
 import { addNewTrainingPlan } from "../service/trainerService/addNewTrainingPlan";
 import { addStudent } from "../service/trainerService/addStudent";
 import { getAllStudents } from "../service/trainerService/getAllStudents";
+import { getSingleStudentData } from "../service/trainerService/getSingleStudentData";
 import { removeDietProduct } from "../service/trainerService/removeDietProduct";
 export const trainerRouter = router.Router();
 
@@ -12,6 +13,14 @@ trainerRouter.get("/trainer/student", async (req: Request, res: Response) => {
 
     const { code, allStudents, success } = await getAllStudents(userToken);
     return res.status(code).json({ code, allStudents, success });
+});
+
+trainerRouter.get("/trainer/student/:id", async (req: Request, res: Response) => {
+    const userToken = req.headers.authorization;
+    const userId = req.params.id;
+    const { code, success, allUserWorkouts, mealHistory } = await getSingleStudentData(userToken, userId);
+
+    return res.status(code).json({ code, success, allUserWorkouts, mealHistory });
 });
 
 trainerRouter.post("/trainer/student", async (req: Request, res: Response) => {

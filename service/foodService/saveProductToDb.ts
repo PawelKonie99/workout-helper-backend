@@ -24,7 +24,7 @@ export const saveProductToDb = async (
         const date = new Date().toLocaleDateString();
         // const date = new Date(Date.now() - 86400000).toLocaleDateString();
 
-        const getAllUserProducts = await allUserProducts({ mealModel, userModel, decodedUser });
+        const getAllUserProducts = await allUserProducts({ mealModel, userModel, userId: decodedUser.id });
 
         //Szukamy posilkow z dzisiejszego dnia
         const isAllDayMealFound = getAllUserProducts.find((allProducts) => allProducts?.mealDate === date);

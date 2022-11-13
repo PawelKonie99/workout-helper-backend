@@ -15,7 +15,7 @@ export const getTodayProducts = async (userToken: string): Promise<ITodayProduct
             return { code: ResponseCode.unauthorized, success: false };
         }
 
-        const getAllUserProducts = await allUserProducts({ mealModel, userModel, decodedUser });
+        const getAllUserProducts = await allUserProducts({ mealModel, userModel, userId: decodedUser.id });
 
         const todayUserProducts = getAllUserProducts.find(({ mealDate }) => mealDate === date);
 

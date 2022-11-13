@@ -79,7 +79,7 @@ export interface IProductsSummary {
     totalCarbons: number;
 }
 
-interface IMealMacros {
+export interface IMealMacros {
     kcal: number;
     proteins: number;
     carbons: number;
