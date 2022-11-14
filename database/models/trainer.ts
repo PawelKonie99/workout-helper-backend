@@ -6,6 +6,7 @@ export interface ITrainerSchema extends Document {
         type: Types.ObjectId;
         ref: "User";
     };
+    trainerName: string;
     students: {
         type?: Types.ObjectId;
         ref?: "Student";
@@ -17,6 +18,11 @@ const trainerSchema = new Schema<ITrainerSchema>({
         required: true,
         type: Types.ObjectId,
         ref: "User",
+    },
+    trainerName: {
+        type: String,
+        minlength: 3,
+        required: true,
     },
     students: [
         {

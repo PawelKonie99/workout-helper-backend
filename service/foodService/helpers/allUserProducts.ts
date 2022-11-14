@@ -1,17 +1,16 @@
 import { Model } from "mongoose";
 import { IMealSchema } from "../../../database/models/meal";
 import { IUserSchema } from "../../../database/models/user";
-import { IDecodedUser } from "../../../types/IUser.types";
 
 interface IAllUserProductsArguments {
     mealModel: Model<IMealSchema>;
     userModel: Model<IUserSchema>;
-    decodedUser: IDecodedUser;
+    userId: string;
 }
 
-export const allUserProducts = async ({ mealModel, userModel, decodedUser }: IAllUserProductsArguments) => {
+export const allUserProducts = async ({ mealModel, userModel, userId }: IAllUserProductsArguments) => {
     //Szukamy wszystkich id posilkow uzytkownika
-    const userMealsIds = await userModel.findById(decodedUser.id).select("meals").exec();
+    const userMealsIds = await userModel.findById(userId).select("meals").exec();
 
     //tutaj otrzyujemy tablice z wszystkimi obiektami posilkow
     return await Promise.all(

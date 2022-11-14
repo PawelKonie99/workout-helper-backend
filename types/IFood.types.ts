@@ -48,7 +48,7 @@ export interface ITodayProductsResponse {
 }
 
 export interface ITodayProducts {
-    mealDate: string;
+    mealDate?: string;
     breakfast: IDatabaseProduct[];
     brunch: IDatabaseProduct[];
     dinner: IDatabaseProduct[];
@@ -79,9 +79,15 @@ export interface IProductsSummary {
     totalCarbons: number;
 }
 
-interface IMealMacros {
+export interface IMealMacros {
     kcal: number;
     proteins: number;
     carbons: number;
     fat: number;
+}
+
+export interface IProductToDelete {
+    allDayMealsId: string;
+    productId: string;
+    typeOfMeal: MEAL_TYPES;
 }

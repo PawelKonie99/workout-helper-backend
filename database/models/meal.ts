@@ -1,13 +1,14 @@
 import { Schema, model, Document, Types } from "mongoose";
 import uniqueValidator from "mongoose-unique-validator";
+import { IDatabaseProduct } from "../../types/IFood.types";
 
 export interface IMealSchema extends Document {
     mealDate: string;
-    breakfast: [{ productName: string; kcal: string; proteins: string; carbons: string; fat: string }];
-    brunch: [{ productName: string; kcal: string; proteins: string; carbons: string; fat: string }];
-    dinner: [{ productName: string; kcal: string; proteins: string; carbons: string; fat: string }];
-    dessert: [{ productName: string; kcal: string; proteins: string; carbons: string; fat: string }];
-    supper: [{ productName: string; kcal: string; proteins: string; carbons: string; fat: string }];
+    breakfast: IDatabaseProduct[];
+    brunch: IDatabaseProduct[];
+    dinner: IDatabaseProduct[];
+    dessert: IDatabaseProduct[];
+    supper: IDatabaseProduct[];
     user: {
         type: Types.ObjectId;
         ref: "User";

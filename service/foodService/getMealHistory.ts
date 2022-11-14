@@ -14,7 +14,7 @@ export const getMealHistory = async (userToken: string): Promise<IMealHistoryRes
             return { code: ResponseCode.unauthorized, success: false };
         }
 
-        const getAllUserProducts = await allUserProducts({ mealModel, userModel, decodedUser });
+        const getAllUserProducts = await allUserProducts({ mealModel, userModel, userId: decodedUser.id });
 
         const mealHistory = getAllUserProducts.map((products) => {
             const { dailySummary, breakfast, brunch, dinner, dessert, supper } = fullDailyMealData({

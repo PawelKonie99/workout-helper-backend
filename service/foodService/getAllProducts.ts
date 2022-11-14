@@ -13,7 +13,7 @@ export const getAllProducts = async (userToken: string): Promise<IAllProductsRes
             return { code: ResponseCode.unauthorized, success: false };
         }
 
-        const getAllUserProducts = await allUserProducts({ mealModel, userModel, decodedUser });
+        const getAllUserProducts = await allUserProducts({ mealModel, userModel, userId: decodedUser.id });
 
         return { code: ResponseCode.success, success: true, allUserProducts: getAllUserProducts };
     } catch (error) {

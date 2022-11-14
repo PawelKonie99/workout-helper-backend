@@ -1,3 +1,4 @@
+import { MEAL_TYPES } from "../../../enums/meal";
 import { ITodayProducts } from "../../../types/IFood.types";
 import { sumMealProductsData } from "./sumMealProductsData";
 
@@ -6,12 +7,14 @@ interface IArgs {
 }
 
 export const fullDailyMealData = ({ products }: IArgs) => {
+    const { BREAKFAST, BRUNCH, DESSERT, DINNER, SUPPER } = MEAL_TYPES;
+
     const summedProductsData = {
-        breakfast: sumMealProductsData(products, "breakfast"),
-        brunch: sumMealProductsData(products, "brunch"),
-        dinner: sumMealProductsData(products, "dinner"),
-        dessert: sumMealProductsData(products, "dessert"),
-        supper: sumMealProductsData(products, "supper"),
+        breakfast: sumMealProductsData(products, BREAKFAST),
+        brunch: sumMealProductsData(products, BRUNCH),
+        dinner: sumMealProductsData(products, DINNER),
+        dessert: sumMealProductsData(products, DESSERT),
+        supper: sumMealProductsData(products, SUPPER),
     };
 
     const { breakfast, brunch, dinner, dessert, supper } = summedProductsData;

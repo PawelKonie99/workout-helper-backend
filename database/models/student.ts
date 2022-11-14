@@ -1,10 +1,18 @@
 import { model, Schema, Types } from "mongoose";
 import uniqueValidator from "mongoose-unique-validator";
+import { IDatabaseProduct } from "../../types/IFood.types";
 import { IWorkoutFields } from "../../types/IWorkout.types";
 
 export interface IStudentSchema extends Document {
     studentName: string;
     trainingPlan: IWorkoutFields[];
+    diet: {
+        breakfast: IDatabaseProduct[];
+        brunch: IDatabaseProduct[];
+        dinner: IDatabaseProduct[];
+        dessert: IDatabaseProduct[];
+        supper: IDatabaseProduct[];
+    };
     user: {
         type: Types.ObjectId;
         ref: "User";
@@ -36,6 +44,53 @@ const studentSchema = new Schema<IStudentSchema>({
             },
         },
     ],
+    diet: {
+        breakfast: [
+            {
+                productName: { type: String },
+                kcal: { type: String },
+                proteins: { type: String },
+                carbons: { type: String },
+                fat: { type: String },
+            },
+        ],
+        brunch: [
+            {
+                productName: { type: String },
+                kcal: { type: String },
+                proteins: { type: String },
+                carbons: { type: String },
+                fat: { type: String },
+            },
+        ],
+        dinner: [
+            {
+                productName: { type: String },
+                kcal: { type: String },
+                proteins: { type: String },
+                carbons: { type: String },
+                fat: { type: String },
+            },
+        ],
+        dessert: [
+            {
+                productName: { type: String },
+                kcal: { type: String },
+                proteins: { type: String },
+                carbons: { type: String },
+                fat: { type: String },
+            },
+        ],
+        supper: [
+            {
+                productName: { type: String },
+                kcal: { type: String },
+                proteins: { type: String },
+                carbons: { type: String },
+                fat: { type: String },
+            },
+        ],
+    },
     studentName: {
         type: String,
         minlength: 3,
