@@ -18,6 +18,10 @@ export const getTrainingPlan = async (userToken: string): Promise<ITrainingPlanR
 
         const studentData = await getStudentByStudentId(student.toString());
 
+        if (!studentData.trainingPlan) {
+            return { code: ResponseCode.success, success: true, trainingPlan: [] };
+        }
+
         const trainingPlan = studentData.trainingPlan;
 
         return { code: ResponseCode.success, success: true, trainingPlan };

@@ -1,6 +1,6 @@
 import * as router from "express";
 import { Request, Response } from "express";
-import { getStudentDiet } from "../service/studentService/getStudentDiet";
+import { getDiet } from "../service/studentService/getDiet";
 import { getTrainingPlan } from "../service/studentService/getTrainingPlan";
 
 export const studentRouter = router.Router();
@@ -12,10 +12,9 @@ studentRouter.get("/student/plan", async (req: Request, res: Response) => {
     return res.status(code).json({ code, trainingPlan, success });
 });
 
-studentRouter.get("/student/diet/:studentId", async (req: Request, res: Response) => {
+studentRouter.get("/student/diet", async (req: Request, res: Response) => {
     const userToken = req.headers.authorization;
-    const studentId = req.params.studentId;
 
-    const { code, success, diet } = await getStudentDiet(userToken, studentId);
-    return res.status(code).json({ code, success, diet });
+    const { code, diet, success } = await getDiet(userToken);
+    return res.status(code).json({ code, diet, success });
 });

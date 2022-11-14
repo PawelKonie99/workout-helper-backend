@@ -9,27 +9,21 @@ export const workoutRouter = router.Router();
 workoutRouter.post("/workouts", async (req: Request, res: Response) => {
     const userToken = req.headers.authorization;
 
-    const saveWorkout = await saveWorkoutToDb(req.body, userToken);
-    const { code, message, success } = saveWorkout;
-
+    const { code, message, success } = await saveWorkoutToDb(req.body, userToken);
     return res.status(code).json({ code, message, success });
 });
 
 workoutRouter.get("/workouts", async (req: Request, res: Response) => {
     const userToken = req.headers.authorization;
 
-    const userWorkouts = await getAllUserWorkouts(userToken);
-    const { code, allUserWorkouts, success } = userWorkouts;
-
+    const { code, allUserWorkouts, success } = await getAllUserWorkouts(userToken);
     return res.status(code).json({ code, allUserWorkouts, success });
 });
 
 workoutRouter.get("/workouts/options", async (req: Request, res: Response) => {
     const userToken = req.headers.authorization;
 
-    const userWorkouts = await getAllWorkoutOptions(userToken);
-    const { code, success, exercise, reps, series, weight } = userWorkouts;
-
+    const { code, success, exercise, reps, series, weight } = await getAllWorkoutOptions(userToken);
     return res.status(code).json({ code, success, exercise, reps, series, weight });
 });
 
@@ -37,8 +31,6 @@ workoutRouter.get("/workouts/best", async (req: Request, res: Response) => {
     const userToken = req.headers.authorization;
     const exerciseName = req.query.exerciseName.toString();
 
-    const bestExercise = await getBestExercise(userToken, exerciseName);
-    const { code, success, exerciseWithRecord } = bestExercise;
-
+    const { code, success, exerciseWithRecord } = await getBestExercise(userToken, exerciseName);
     return res.status(code).json({ code, success, exerciseWithRecord });
 });

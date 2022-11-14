@@ -48,7 +48,7 @@ export interface ITodayProductsResponse {
 }
 
 export interface ITodayProducts {
-    mealDate: string;
+    mealDate?: string;
     breakfast: IDatabaseProduct[];
     brunch: IDatabaseProduct[];
     dinner: IDatabaseProduct[];

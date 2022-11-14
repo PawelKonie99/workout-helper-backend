@@ -9,24 +9,21 @@ export const foodRouter = router.Router();
 
 foodRouter.get("/food", async (req: Request, res: Response) => {
     const userToken = req.headers.authorization;
-    const userProducts = await getAllProducts(userToken);
-    const { code, success, allUserProducts } = userProducts;
+    const { code, success, allUserProducts } = await getAllProducts(userToken);
 
     return res.status(code).json({ code, allUserProducts, success });
 });
 
 foodRouter.get("/food/history", async (req: Request, res: Response) => {
     const userToken = req.headers.authorization;
-    const userProducts = await getMealHistory(userToken);
-    const { code, success, mealHistory } = userProducts;
+    const { code, success, mealHistory } = await getMealHistory(userToken);
 
     return res.status(code).json({ code, mealHistory, success });
 });
 
 foodRouter.get("/food/today", async (req: Request, res: Response) => {
     const userToken = req.headers.authorization;
-    const userProducts = await getTodayProducts(userToken);
-    const { code, success, todayUserProducts, dailySummary } = userProducts;
+    const { code, success, todayUserProducts, dailySummary } = await getTodayProducts(userToken);
 
     return res.status(code).json({ code, todayUserProducts, success, dailySummary });
 });
@@ -41,8 +38,7 @@ foodRouter.post("/food", async (req: Request, res: Response) => {
 
 foodRouter.delete("/food", async (req: Request, res: Response) => {
     const userToken = req.headers.authorization;
-    const deletedProductResponse = await deleteProductFromDb(userToken, req.body);
-    const { code, success } = deletedProductResponse;
+    const { code, success } = await deleteProductFromDb(userToken, req.body);
 
     return res.status(code).json({ code, success });
 });

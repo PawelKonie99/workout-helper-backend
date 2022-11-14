@@ -1,5 +1,5 @@
 import { ResponseCode } from "../enums/responseCode";
-import { IDatabaseProduct } from "./IFood.types";
+import { IDatabaseProduct, IProductsSummary } from "./IFood.types";
 import { IWorkoutFields } from "./IWorkout.types";
 
 export interface ITrainingPlanResponse {
@@ -13,6 +13,7 @@ export interface IGetStudenDietResponse {
     success: boolean;
     diet?:
         | {
+              dailySummary?: IProductsSummary | Record<string, never>;
               breakfast: IDatabaseProduct[];
               brunch: IDatabaseProduct[];
               dinner: IDatabaseProduct[];

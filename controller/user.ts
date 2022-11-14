@@ -21,8 +21,7 @@ userRouter.post("/user/login", async (req: Request, res: Response) => {
 
 userRouter.get("/user", async (req: Request, res: Response) => {
     const userToken = req.headers.authorization;
-    const userData = await getUserData(userToken);
-    const { code, success, username, trainerName } = userData;
+    const { code, success, username, trainerName } = await getUserData(userToken);
 
     return res.status(code).json({ code, success, username, trainerName });
 });
