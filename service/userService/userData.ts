@@ -17,7 +17,7 @@ export const getUserData = async (userToken: string): Promise<IUserDataResponse>
         }
         const userData = await userModel.findById(decodedUser.id);
 
-        if (!userData.isTrainer) {
+        if (!userData.roles.trainerRole) {
             const { student } = await userModel.findById(decodedUser.id).select("student").exec();
 
             const studentData = await getStudentByStudentId(student.toString());

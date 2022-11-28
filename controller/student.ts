@@ -18,3 +18,10 @@ studentRouter.get("/student/diet", async (req: Request, res: Response) => {
     const { code, diet, success } = await getDiet(userToken);
     return res.status(code).json({ code, diet, success });
 });
+
+studentRouter.get("/student/trainerRequest", async (req: Request, res: Response) => {
+    const userToken = req.headers.authorization;
+
+    const { code, diet, success } = await getDiet(userToken);
+    return res.status(code).json({ code, diet, success });
+});

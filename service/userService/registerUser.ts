@@ -29,7 +29,11 @@ export const registerUser = async (userCredentails: IUserCredentials): Promise<I
         const newUser = new userModel({
             username,
             passwordHash: passwordHash,
-            isTrainer,
+            roles: {
+                adminRole: false,
+                trainerRole: isTrainer,
+                userRole: true,
+            },
         });
 
         const savedUser = await newUser.save();

@@ -35,7 +35,7 @@ export const loginUser = async (userCredentails: IUserCredentials): Promise<ILog
         return {
             code: ResponseCode.success,
             message: "User found in databse",
-            loggedUser: { username, token, isTrainer: registeredUser.isTrainer },
+            loggedUser: { username, token, roles: registeredUser.roles },
         };
     } catch (error) {
         return {

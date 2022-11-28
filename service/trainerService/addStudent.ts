@@ -35,12 +35,18 @@ export const addStudent = async (
             return { code: ResponseCode.success, message: "User not found", success: false };
         }
 
+        // await trainerModel.findByIdAndUpdate(trainer, {
+        //     $push: { students: student },
+        // });
         await trainerModel.findByIdAndUpdate(trainer, {
-            $push: { students: student },
+            $push: { requestedStudents: student },
         });
 
+        // await studentModel.findByIdAndUpdate(student, {
+        //     trainer: trainer,
+        // });
         await studentModel.findByIdAndUpdate(student, {
-            trainer: trainer,
+            $push: { requestedTrainers: trainer },
         });
 
         return {

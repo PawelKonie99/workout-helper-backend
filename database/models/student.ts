@@ -13,6 +13,9 @@ export interface IStudentSchema extends Document {
         dessert: IDatabaseProduct[];
         supper: IDatabaseProduct[];
     };
+    requestedTrainers: {
+        id: string;
+    }[];
     user: {
         type: Types.ObjectId;
         ref: "User";
@@ -39,6 +42,14 @@ const studentSchema = new Schema<IStudentSchema>({
                 required: true,
             },
             weightQuantity: {
+                type: String,
+                required: true,
+            },
+        },
+    ],
+    requestedTrainers: [
+        {
+            id: {
                 type: String,
                 required: true,
             },

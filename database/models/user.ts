@@ -4,7 +4,11 @@ import uniqueValidator from "mongoose-unique-validator";
 export interface IUserSchema extends Document {
     username: string;
     passwordHash: string;
-    isTrainer: boolean;
+    roles: {
+        adminRole: boolean;
+        userRole: boolean;
+        trainerRole: boolean;
+    };
     workouts: {
         type?: Types.ObjectId;
         ref?: "Workout";
@@ -35,9 +39,19 @@ const userSchema = new Schema<IUserSchema>({
         required: true,
         minlength: 3,
     },
-    isTrainer: {
-        type: Boolean,
-        required: true,
+    roles: {
+        adminRole: {
+            type: Boolean,
+            required: true,
+        },
+        userRole: {
+            type: Boolean,
+            required: true,
+        },
+        trainerRole: {
+            type: Boolean,
+            required: true,
+        },
     },
     workouts: [
         {
