@@ -1,4 +1,4 @@
-import { studentModel } from "../../../database/models/student";
+import { studentResourcesModel } from "../../../database/models/studentResources";
 import { MEAL_TYPES } from "../../../enums/meal";
 import { IProductPayload } from "../../../types/IFood.types";
 
@@ -7,7 +7,7 @@ export const addProductToDiet = async (studentId: string, productPayload: IProdu
 
     switch (typeOfMeal) {
         case MEAL_TYPES.BREAKFAST:
-            await studentModel.updateOne(
+            await studentResourcesModel.updateOne(
                 {
                     _id: studentId,
                 },
@@ -25,7 +25,7 @@ export const addProductToDiet = async (studentId: string, productPayload: IProdu
             );
             break;
         case MEAL_TYPES.BRUNCH:
-            await studentModel.updateOne(
+            await studentResourcesModel.updateOne(
                 {
                     _id: studentId,
                 },
@@ -43,7 +43,7 @@ export const addProductToDiet = async (studentId: string, productPayload: IProdu
             );
             break;
         case MEAL_TYPES.DINNER:
-            await studentModel.updateOne(
+            await studentResourcesModel.updateOne(
                 {
                     _id: studentId,
                 },
@@ -62,7 +62,7 @@ export const addProductToDiet = async (studentId: string, productPayload: IProdu
 
             break;
         case MEAL_TYPES.DESSERT:
-            await studentModel.updateOne(
+            await studentResourcesModel.updateOne(
                 {
                     _id: studentId,
                 },
@@ -81,7 +81,7 @@ export const addProductToDiet = async (studentId: string, productPayload: IProdu
 
             break;
         case MEAL_TYPES.SUPPER:
-            await studentModel.updateOne(
+            await studentResourcesModel.updateOne(
                 {
                     _id: studentId,
                 },

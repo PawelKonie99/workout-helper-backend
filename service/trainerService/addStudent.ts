@@ -2,12 +2,12 @@ import { ResponseCode } from "../../enums/responseCode";
 import dotenv from "dotenv";
 import { tokenAuth } from "../../helpers/tokenAuth";
 import { IStudentPayload } from "../../types/ITrainer.types";
-import { trainerModel } from "../../database/models/trainer";
-import { studentModel } from "../../database/models/student";
+import { trainerResourcesModel } from "../../database/models/trainerResources";
+import { studentResourcesModel } from "../../database/models/studentResources";
 
 import { IStandardResponse } from "../../types/common.types";
-import { getTrainerIdByUserId } from "../../helpers/getTrainerIdByUserId";
 import { getStudentIdByStudentName } from "../../helpers/getStudentIdByStudentName";
+import { userModel } from "../../database/models/user";
 dotenv.config();
 
 export const addStudent = async (
@@ -23,30 +23,36 @@ export const addStudent = async (
             return { code: ResponseCode.unauthorized, message: "User not found", success: false };
         }
 
-        const trainer = await getTrainerIdByUserId(decodedUser.id);
+        const { trainerResourcesId } = await userModel.findById(decodedUser.id);
 
-        if (!trainer) {
+        if (!trainerResourcesId) {
             return { code: ResponseCode.success, message: "Trainer not found", success: false };
         }
 
-        const student = await getStudentIdByStudentName(studentName);
+        const studentId = await getStudentIdByStudentName(studentName);
 
-        if (!student) {
+        if (!studentId) {
             return { code: ResponseCode.success, message: "User not found", success: false };
         }
 
-        // await trainerModel.findByIdAndUpdate(trainer, {
-        //     $push: { students: student },
-        // });
-        await trainerModel.findByIdAndUpdate(trainer, {
-            $push: { requestedStudents: student },
+        const trainerData = await trainerResourcesModel.findById(trainerResourcesId);
+
+        const isUserAlreadyRequested = trainerData?.requestedStudents.find(
+            (trainerId) => trainerId.valueOf() === studentId.valueOf()
+        );
+
+        if (isUserAlreadyRequested) {
+            return { code: ResponseCode.success, message: "User alredy added", success: false };
+        }
+
+        await trainerResourcesModel.findByIdAndUpdate(trainerResourcesId, {
+            // $push: { requestedStudents: studentId },
+            $push: { students: studentId },
         });
 
-        // await studentModel.findByIdAndUpdate(student, {
-        //     trainer: trainer,
-        // });
-        await studentModel.findByIdAndUpdate(student, {
-            $push: { requestedTrainers: trainer },
+        await studentResourcesModel.findByIdAndUpdate(studentId, {
+            // $push: { requestedTrainers: decodedUser.id },
+            trainer: trainerData.userId,
         });
 
         return {

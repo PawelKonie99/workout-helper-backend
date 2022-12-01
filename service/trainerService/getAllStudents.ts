@@ -1,12 +1,10 @@
 import { ResponseCode } from "../../enums/responseCode";
 import dotenv from "dotenv";
-import { trainerModel } from "../../database/models/trainer";
+import { trainerResourcesModel } from "../../database/models/trainerResources";
 import { tokenAuth } from "../../helpers/tokenAuth";
-
-import { studentModel } from "../../database/models/student";
 import { mapAllStudents } from "./helpers/mapAllStudents";
 import { IGetAllStudentsResponse } from "../../types/ITrainer.types";
-import { getTrainerIdByUserId } from "../../helpers/getTrainerIdByUserId";
+import { userModel } from "../../database/models/user";
 
 dotenv.config();
 
@@ -17,13 +15,24 @@ export const getAllStudents = async (userToken: string): Promise<IGetAllStudents
             return { code: ResponseCode.unauthorized, success: false };
         }
 
-        const trainerId = await getTrainerIdByUserId(decodedUser.id);
+        const { trainerResourcesId } = await userModel.findById(decodedUser.id);
 
-        const trainerStudentsId = await trainerModel.findById(trainerId).select("students").exec();
+        const trainerStudentsId = await trainerResourcesModel
+            .findById(trainerResourcesId)
+            .select("students")
+            .exec();
+
+        if (!trainerStudentsId.students.length) {
+            return {
+                code: ResponseCode.success,
+                success: true,
+                allStudents: [],
+            };
+        }
 
         const allTrainerStudents = await Promise.all(
             trainerStudentsId.students.map(async (studentId) => {
-                const student = await studentModel.findById(studentId);
+                const student = await userModel.findById(studentId);
 
                 return student;
             })
@@ -37,6 +46,8 @@ export const getAllStudents = async (userToken: string): Promise<IGetAllStudents
             allStudents: mappedStudents,
         };
     } catch (error) {
+        console.log("error", error);
+
         return { code: ResponseCode.badRequest, success: false };
     }
 };

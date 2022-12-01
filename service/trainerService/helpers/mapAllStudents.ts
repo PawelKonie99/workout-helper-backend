@@ -1,11 +1,11 @@
 import { Types, Document } from "mongoose";
-import { IStudentSchema } from "../../../database/models/student";
+import { IUserSchema } from "../../../database/models/user";
 
 export const mapAllStudents = (
-    allTrainerStudents: (Document<unknown, IStudentSchema> &
-        IStudentSchema & {
+    allTrainerStudents: (Document<unknown, IUserSchema> &
+        IUserSchema & {
             _id: Types.ObjectId;
         })[]
 ) => {
-    return allTrainerStudents.map(({ user, studentName, id }) => ({ user, studentName, id }));
+    return allTrainerStudents.map(({ username, id }) => ({ studentName: username, id }));
 };

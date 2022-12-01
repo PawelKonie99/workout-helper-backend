@@ -17,13 +17,13 @@ export interface IUserSchema extends Document {
         type: Types.ObjectId;
         ref: "Meal";
     }[];
-    student: {
+    studentResourcesId: {
         type?: Types.ObjectId;
-        ref?: "Student";
+        ref?: "StudentResources";
     };
-    trainer: {
+    trainerResourcesId: {
         type?: Types.ObjectId;
-        ref?: "Trainer";
+        ref?: "TrainerResources";
     };
 }
 
@@ -65,13 +65,13 @@ const userSchema = new Schema<IUserSchema>({
             ref: "Meal",
         },
     ],
-    student: {
+    studentResourcesId: {
         type: Types.ObjectId,
-        ref: "Student",
+        ref: "StudentResources",
     },
-    trainer: {
+    trainerResourcesId: {
         type: Types.ObjectId,
-        ref: "Trainer",
+        ref: "TrainerResources",
     },
 });
 

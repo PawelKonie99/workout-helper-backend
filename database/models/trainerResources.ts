@@ -1,50 +1,43 @@
 import { model, Schema, Types } from "mongoose";
 import uniqueValidator from "mongoose-unique-validator";
 
-export interface ITrainerSchema extends Document {
-    user: {
+export interface ITrainerResourcesSchema extends Document {
+    userId: {
         type: Types.ObjectId;
         ref: "User";
     };
-    trainerName: string;
     requestedStudents: {
-        id: string;
+        type?: Types.ObjectId;
+        ref?: "User";
     }[];
     students: {
         type?: Types.ObjectId;
-        ref?: "Student";
+        ref?: "User";
     }[];
 }
 
-const trainerSchema = new Schema<ITrainerSchema>({
-    user: {
+const trainerResourcesSchema = new Schema<ITrainerResourcesSchema>({
+    userId: {
         required: true,
         type: Types.ObjectId,
         ref: "User",
     },
-    trainerName: {
-        type: String,
-        minlength: 3,
-        required: true,
-    },
     requestedStudents: [
         {
-            id: {
-                type: String,
-                required: true,
-            },
+            type: Schema.Types.ObjectId,
+            ref: "StudentResources",
         },
     ],
     students: [
         {
             type: Schema.Types.ObjectId,
-            ref: "Student",
+            ref: "StudentResources",
         },
     ],
 });
 
-trainerSchema.plugin(uniqueValidator);
-trainerSchema.set("toJSON", {
+trainerResourcesSchema.plugin(uniqueValidator);
+trainerResourcesSchema.set("toJSON", {
     transform: (document, returnedObject) => {
         returnedObject.id = returnedObject._id.toString();
         delete returnedObject._id;
@@ -53,4 +46,7 @@ trainerSchema.set("toJSON", {
     },
 });
 
-export const trainerModel = model<ITrainerSchema>("Trainer", trainerSchema);
+export const trainerResourcesModel = model<ITrainerResourcesSchema>(
+    "TrainerResources",
+    trainerResourcesSchema
+);
