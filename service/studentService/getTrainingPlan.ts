@@ -14,7 +14,7 @@ export const getTrainingPlan = async (userToken: string): Promise<ITrainingPlanR
             return { code: ResponseCode.badRequest, success: false };
         }
 
-        const { studentResourcesId } = await userModel.findById(decodedUser.id).select("student").exec(); //TODO sprawdzic
+        const { studentResourcesId } = await userModel.findById(decodedUser.id);
 
         const studentData = await studentResourcesModel.findById(studentResourcesId);
 

@@ -23,13 +23,14 @@ export const addStudent = async (
             return { code: ResponseCode.unauthorized, message: "User not found", success: false };
         }
 
-        const { trainerResourcesId } = await userModel.findById(decodedUser.id);
+        const { trainerResourcesId, id } = await userModel.findById(decodedUser.id);
 
         if (!trainerResourcesId) {
             return { code: ResponseCode.success, message: "Trainer not found", success: false };
         }
 
         const studentId = await getStudentIdByStudentName(studentName);
+        const { studentResourcesId } = await userModel.findById(studentId);
 
         if (!studentId) {
             return { code: ResponseCode.success, message: "User not found", success: false };
@@ -50,9 +51,9 @@ export const addStudent = async (
             $push: { students: studentId },
         });
 
-        await studentResourcesModel.findByIdAndUpdate(studentId, {
+        await studentResourcesModel.findByIdAndUpdate(studentResourcesId, {
             // $push: { requestedTrainers: decodedUser.id },
-            trainer: trainerData.userId,
+            trainerId: id,
         });
 
         return {
