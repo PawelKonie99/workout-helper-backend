@@ -31,6 +31,6 @@ studentRouter.get("/student/trainerRequest", async (req: Request, res: Response)
 studentRouter.post("/student/trainerRequest", async (req: Request, res: Response) => {
     const userToken = req.headers.authorization;
 
-    const { code, message, success } = await studentTrainerDecision(req.body, userToken);
-    return res.status(code).json({ code, message, success });
+    const { code, message, success, trainerName } = await studentTrainerDecision(req.body, userToken);
+    return res.status(code).json({ code, message, success, trainerName });
 });
