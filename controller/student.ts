@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import { getDiet } from "../service/studentService/getDiet";
 import { getTrainerRequest } from "../service/studentService/getTrainerRequest";
 import { getTrainingPlan } from "../service/studentService/getTrainingPlan";
+import { studentTrainerDecision } from "../service/studentService/studentTrainerDecision";
 
 export const studentRouter = router.Router();
 
@@ -23,6 +24,13 @@ studentRouter.get("/student/diet", async (req: Request, res: Response) => {
 studentRouter.get("/student/trainerRequest", async (req: Request, res: Response) => {
     const userToken = req.headers.authorization;
 
-    const { code, diet, success } = await getTrainerRequest(userToken);
-    return res.status(code).json({ code, diet, success });
+    const { code, requestedTrainers, success } = await getTrainerRequest(userToken);
+    return res.status(code).json({ code, requestedTrainers, success });
+});
+
+studentRouter.post("/student/trainerRequest", async (req: Request, res: Response) => {
+    const userToken = req.headers.authorization;
+
+    const { code, message, success } = await studentTrainerDecision(req.body, userToken);
+    return res.status(code).json({ code, message, success });
 });

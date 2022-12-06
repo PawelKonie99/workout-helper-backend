@@ -47,13 +47,13 @@ export const addStudent = async (
         }
 
         await trainerResourcesModel.findByIdAndUpdate(trainerResourcesId, {
-            // $push: { requestedStudents: studentId },
-            $push: { students: studentId },
+            $push: { requestedStudents: studentId },
+            // $push: { students: studentId },
         });
 
         await studentResourcesModel.findByIdAndUpdate(studentResourcesId, {
-            // $push: { requestedTrainers: decodedUser.id },
-            trainerId: id,
+            $push: { requestedTrainers: decodedUser.id },
+            // trainerId: id,
         });
 
         return {
