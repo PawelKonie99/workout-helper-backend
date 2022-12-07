@@ -4,6 +4,7 @@ import { tokenAuth } from "../../helpers/tokenAuth";
 import { IStandardResponse } from "../../types/common.types";
 import { IRemoveDietProductPayload } from "../../types/ITrainer.types";
 import { deleteProductFromDiet } from "./helpers/deleteProductFromDiet";
+import { userModel } from "../../database/models/user";
 dotenv.config();
 
 interface IRemoveDietProduct {
@@ -25,7 +26,12 @@ export const removeDietProduct = async (
             return { code: ResponseCode.unauthorized, message: "User not found", success: false };
         }
 
-        const deletedProductResponse = await deleteProductFromDiet(studentId, productToRemove);
+        const { studentResourcesId } = await userModel.findById(studentId);
+
+        const deletedProductResponse = await deleteProductFromDiet(
+            studentResourcesId.toString(),
+            productToRemove
+        );
 
         return {
             code: ResponseCode.success,

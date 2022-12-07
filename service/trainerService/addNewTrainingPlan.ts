@@ -2,8 +2,9 @@ import { ResponseCode } from "../../enums/responseCode";
 import dotenv from "dotenv";
 import { tokenAuth } from "../../helpers/tokenAuth";
 import { IAddNewTrainingPlanPayload } from "../../types/ITrainer.types";
-import { studentModel } from "../../database/models/student";
+import { studentResourcesModel } from "../../database/models/studentResources";
 import { IStandardResponse } from "../../types/common.types";
+import { userModel } from "../../database/models/user";
 dotenv.config();
 
 export const addNewTrainingPlan = async (
@@ -21,7 +22,9 @@ export const addNewTrainingPlan = async (
             return { code: ResponseCode.unauthorized, message: "User not found", success: false };
         }
 
-        await studentModel.findByIdAndUpdate(id, {
+        const { studentResourcesId } = await userModel.findById(id);
+
+        await studentResourcesModel.findByIdAndUpdate(studentResourcesId, {
             trainingPlan: workoutData,
         });
 
@@ -31,6 +34,8 @@ export const addNewTrainingPlan = async (
             success: true,
         };
     } catch (error) {
+        console.log(error);
+
         return { code: ResponseCode.badRequest, message: error, success: false };
     }
 };

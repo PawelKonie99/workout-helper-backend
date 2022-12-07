@@ -3,8 +3,8 @@ import dotenv from "dotenv";
 import { tokenAuth } from "../../helpers/tokenAuth";
 import { IGetStudenDietResponse } from "../../types/IStudent.types";
 import { userModel } from "../../database/models/user";
-import { getStudentByStudentId } from "../../helpers/getStudentByStudentId";
 import { fullDailyMealData } from "../foodService/helpers/fullDailyMealData";
+import { studentResourcesModel } from "../../database/models/studentResources";
 dotenv.config();
 
 //TODO pomyslec nad tym, zeby sprawdzac czy student nalezy do danego trenera
@@ -16,9 +16,9 @@ export const getDiet = async (userToken: string): Promise<IGetStudenDietResponse
             return { code: ResponseCode.unauthorized, success: false };
         }
 
-        const { student } = await userModel.findById(decodedUser.id).select("student").exec();
+        const { studentResourcesId } = await userModel.findById(decodedUser.id);
 
-        const studentData = await getStudentByStudentId(student.toString());
+        const studentData = await studentResourcesModel.findById(studentResourcesId);
 
         if (!studentData.diet) {
             return { code: ResponseCode.success, success: true, diet: {} };

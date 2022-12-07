@@ -1,0 +1,4 @@
+export enum MANAGE_REQUESTED_TRAINERS {
+    ACCEPT = "ACCEPT",
+    DECLINE = "DECLINE",
+}

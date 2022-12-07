@@ -1,9 +1,9 @@
 import { userModel } from "../../database/models/user";
 import { ResponseCode } from "../../enums/responseCode";
-import { getStudentByStudentId } from "../../helpers/getStudentByStudentId";
 import { tokenAuth } from "../../helpers/tokenAuth";
 import dotenv from "dotenv";
 import { ITrainingPlanResponse } from "../../types/IStudent.types";
+import { studentResourcesModel } from "../../database/models/studentResources";
 dotenv.config();
 
 export const getTrainingPlan = async (userToken: string): Promise<ITrainingPlanResponse> => {
@@ -14,9 +14,9 @@ export const getTrainingPlan = async (userToken: string): Promise<ITrainingPlanR
             return { code: ResponseCode.badRequest, success: false };
         }
 
-        const { student } = await userModel.findById(decodedUser.id).select("student").exec();
+        const { studentResourcesId } = await userModel.findById(decodedUser.id);
 
-        const studentData = await getStudentByStudentId(student.toString());
+        const studentData = await studentResourcesModel.findById(studentResourcesId);
 
         if (!studentData.trainingPlan) {
             return { code: ResponseCode.success, success: true, trainingPlan: [] };

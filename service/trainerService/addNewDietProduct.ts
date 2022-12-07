@@ -4,6 +4,7 @@ import { tokenAuth } from "../../helpers/tokenAuth";
 import { IProductPayload } from "../../types/IFood.types";
 import { addProductToDiet } from "./helpers/addProductToDiet";
 import { IStandardResponse } from "../../types/common.types";
+import { userModel } from "../../database/models/user";
 dotenv.config();
 
 interface IaddNewDietProduct {
@@ -25,7 +26,9 @@ export const addNewDietProduct = async (
             return { code: ResponseCode.unauthorized, message: "User not found", success: false };
         }
 
-        await addProductToDiet(studentId, productPayload);
+        const { studentResourcesId } = await userModel.findById(studentId);
+
+        await addProductToDiet(studentResourcesId.toString(), productPayload);
 
         return {
             code: ResponseCode.success,

@@ -13,7 +13,7 @@ export interface ILoginResponse {
         | {
               username: string;
               token: string;
-              isTrainer: boolean;
+              roles: IUserRoles;
           }
         | Record<string, never>;
 }
@@ -28,4 +28,10 @@ export interface IUserDataResponse {
     success: boolean;
     username?: string;
     trainerName?: string;
+}
+
+export interface IUserRoles {
+    adminRole: boolean;
+    trainerRole: boolean;
+    userRole: boolean;
 }

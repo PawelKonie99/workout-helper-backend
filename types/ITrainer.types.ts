@@ -13,12 +13,11 @@ export interface IGetAllStudentsResponse {
     success: boolean;
     allStudents?:
         | {
-              user: {
+              id: {
                   type: Types.ObjectId;
                   ref: "User";
               };
               studentName: string;
-              id: string;
           }[]
         | [];
 }

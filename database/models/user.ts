@@ -4,7 +4,11 @@ import uniqueValidator from "mongoose-unique-validator";
 export interface IUserSchema extends Document {
     username: string;
     passwordHash: string;
-    isTrainer: boolean;
+    roles: {
+        adminRole: boolean;
+        userRole: boolean;
+        trainerRole: boolean;
+    };
     workouts: {
         type?: Types.ObjectId;
         ref?: "Workout";
@@ -13,13 +17,13 @@ export interface IUserSchema extends Document {
         type: Types.ObjectId;
         ref: "Meal";
     }[];
-    student: {
+    studentResourcesId: {
         type?: Types.ObjectId;
-        ref?: "Student";
+        ref?: "StudentResources";
     };
-    trainer: {
+    trainerResourcesId: {
         type?: Types.ObjectId;
-        ref?: "Trainer";
+        ref?: "TrainerResources";
     };
 }
 
@@ -35,9 +39,19 @@ const userSchema = new Schema<IUserSchema>({
         required: true,
         minlength: 3,
     },
-    isTrainer: {
-        type: Boolean,
-        required: true,
+    roles: {
+        adminRole: {
+            type: Boolean,
+            required: true,
+        },
+        userRole: {
+            type: Boolean,
+            required: true,
+        },
+        trainerRole: {
+            type: Boolean,
+            required: true,
+        },
     },
     workouts: [
         {
@@ -51,13 +65,13 @@ const userSchema = new Schema<IUserSchema>({
             ref: "Meal",
         },
     ],
-    student: {
+    studentResourcesId: {
         type: Types.ObjectId,
-        ref: "Student",
+        ref: "StudentResources",
     },
-    trainer: {
+    trainerResourcesId: {
         type: Types.ObjectId,
-        ref: "Trainer",
+        ref: "TrainerResources",
     },
 });
 

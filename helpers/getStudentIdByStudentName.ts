@@ -1,7 +1,7 @@
 import { userModel } from "../database/models/user";
 
 export const getStudentIdByStudentName = async (studentName: string) => {
-    const { student } = (await userModel.findOne({ username: studentName })) || {};
+    const { id } = (await userModel.findOne({ username: studentName })) || {};
 
-    return student;
+    return id;
 };

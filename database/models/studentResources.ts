@@ -3,8 +3,7 @@ import uniqueValidator from "mongoose-unique-validator";
 import { IDatabaseProduct } from "../../types/IFood.types";
 import { IWorkoutFields } from "../../types/IWorkout.types";
 
-export interface IStudentSchema extends Document {
-    studentName: string;
+export interface IStudentResourcesSchema extends Document {
     trainingPlan: IWorkoutFields[];
     diet: {
         breakfast: IDatabaseProduct[];
@@ -13,17 +12,21 @@ export interface IStudentSchema extends Document {
         dessert: IDatabaseProduct[];
         supper: IDatabaseProduct[];
     };
-    user: {
+    requestedTrainers: {
+        type: Types.ObjectId;
+        ref: "User";
+    }[];
+    userId: {
         type: Types.ObjectId;
         ref: "User";
     };
-    trainer: {
+    trainerId: {
         type: Types.ObjectId;
-        ref: "Trainer";
+        ref: "User";
     };
 }
 
-const studentSchema = new Schema<IStudentSchema>({
+const studentResourcesSchema = new Schema<IStudentResourcesSchema>({
     trainingPlan: [
         {
             exerciseName: {
@@ -42,6 +45,12 @@ const studentSchema = new Schema<IStudentSchema>({
                 type: String,
                 required: true,
             },
+        },
+    ],
+    requestedTrainers: [
+        {
+            type: Types.ObjectId,
+            ref: "User",
         },
     ],
     diet: {
@@ -91,24 +100,19 @@ const studentSchema = new Schema<IStudentSchema>({
             },
         ],
     },
-    studentName: {
-        type: String,
-        minlength: 3,
-        required: true,
-    },
-    user: {
+    userId: {
         required: true,
         type: Types.ObjectId,
         ref: "User",
     },
-    trainer: {
+    trainerId: {
         type: Types.ObjectId,
-        ref: "Trainer",
+        ref: "User",
     },
 });
 
-studentSchema.plugin(uniqueValidator);
-studentSchema.set("toJSON", {
+studentResourcesSchema.plugin(uniqueValidator);
+studentResourcesSchema.set("toJSON", {
     transform: (document, returnedObject) => {
         returnedObject.id = returnedObject._id.toString();
         delete returnedObject._id;
@@ -117,4 +121,7 @@ studentSchema.set("toJSON", {
     },
 });
 
-export const studentModel = model<IStudentSchema>("Student", studentSchema);
+export const studentResourcesModel = model<IStudentResourcesSchema>(
+    "StudentResources",
+    studentResourcesSchema
+);
