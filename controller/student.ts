@@ -1,5 +1,6 @@
 import * as router from "express";
 import { Request, Response } from "express";
+import { deleteTrainer } from "../service/studentService/deleteTrainer";
 import { getDiet } from "../service/studentService/getDiet";
 import { getTrainerRequest } from "../service/studentService/getTrainerRequest";
 import { getTrainingPlan } from "../service/studentService/getTrainingPlan";
@@ -33,4 +34,11 @@ studentRouter.post("/student/trainerRequest", async (req: Request, res: Response
 
     const { code, message, success, trainerName } = await studentTrainerDecision(req.body, userToken);
     return res.status(code).json({ code, message, success, trainerName });
+});
+
+studentRouter.delete("/student/trainer", async (req: Request, res: Response) => {
+    const userToken = req.headers.authorization;
+
+    const { code, success, message } = await deleteTrainer(userToken);
+    return res.status(code).json({ code, success, message });
 });

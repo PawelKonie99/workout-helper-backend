@@ -27,6 +27,7 @@ export const getUserData = async (userToken: string): Promise<IUserDataResponse>
                 success: true,
                 username: userData.username,
                 trainerName: trainerData?.username,
+                trainerId: studentData?.trainerId?.toString(),
             };
         }
 
