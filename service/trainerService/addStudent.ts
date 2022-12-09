@@ -41,8 +41,11 @@ export const addStudent = async (
         const isUserAlreadyRequested = trainerData?.requestedStudents.find(
             (trainerId) => trainerId.valueOf() === studentId.valueOf()
         );
+        const isUserAlreadyAdded = trainerData?.students.find(
+            (trainerId) => trainerId.valueOf() === studentId.valueOf()
+        );
 
-        if (isUserAlreadyRequested) {
+        if (isUserAlreadyRequested || isUserAlreadyAdded) {
             return { code: ResponseCode.success, message: "User alredy added", success: false };
         }
 
