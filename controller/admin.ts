@@ -1,7 +1,9 @@
 import * as router from "express";
 import { Request, Response } from "express";
+import { changeUserRole } from "../service/adminService/changeUserRole";
 import { deleteUser } from "../service/adminService/deleteUser";
 import { getAllUsers } from "../service/adminService/getAllUsers";
+import { getSingleUserData } from "../service/adminService/getSingleUserData";
 
 export const adminRouter = router.Router();
 
@@ -14,9 +16,24 @@ adminRouter.get("/admin/user/:offset/:limit", async (req: Request, res: Response
     return res.status(code).json({ code, usersData, success });
 });
 
+adminRouter.get("/admin/user/:userId", async (req: Request, res: Response) => {
+    const userToken = req.headers.authorization;
+    const userId = req.params.userId;
+
+    const { code, parsedUserData, success } = await getSingleUserData(userToken, userId);
+    return res.status(code).json({ code, parsedUserData, success });
+});
+
 adminRouter.delete("/admin/user", async (req: Request, res: Response) => {
     const userToken = req.headers.authorization;
 
-    const { code, message, success } = await deleteUser(userToken, req.body.userIdToRemove);
+    const { code, message, success } = await deleteUser(userToken, req.body);
+    return res.status(code).json({ code, message, success });
+});
+
+adminRouter.post("/admin/user/role", async (req: Request, res: Response) => {
+    const userToken = req.headers.authorization;
+
+    const { code, message, success } = await changeUserRole(userToken, req.body);
     return res.status(code).json({ code, message, success });
 });

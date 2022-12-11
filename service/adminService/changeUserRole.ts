@@ -3,15 +3,21 @@ import { ResponseCode } from "../../enums/responseCode";
 import { tokenAuth } from "../../helpers/tokenAuth";
 import { IStandardResponse } from "../../types/common.types";
 
+type IRole = "admin" | "trainer" | "user"; //TODO przeniesc
+
 interface IUserPayload {
-    userIdToRemove: string;
+    userId: string;
+    roleToChange: IRole;
+    isRoleActive: boolean;
 }
 
-export const deleteUser = async (
+export const changeUserRole = async (
     userToken: string,
     userPayload: IUserPayload
 ): Promise<IStandardResponse> => {
     try {
+        const { isRoleActive, roleToChange, userId } = userPayload;
+
         const decodedUser = tokenAuth(userToken);
 
         if (!decodedUser) {
@@ -24,11 +30,22 @@ export const deleteUser = async (
             return { code: ResponseCode.forbidden, success: false };
         }
 
-        const deletedUser = await userModel.deleteOne({ _id: userPayload.userIdToRemove });
-
-        if (deletedUser.deletedCount === 1) {
-            return { code: ResponseCode.success, success: true, message: "Uzytkownik usuniety pomyślnie" };
+        switch (roleToChange) {
+            case "trainer":
+                await userModel.findByIdAndUpdate(userId, {
+                    "roles.trainerRole": isRoleActive,
+                });
+                break;
+            case "admin":
+                await userModel.findByIdAndUpdate(userId, {
+                    "roles.adminRole": isRoleActive,
+                });
+                break;
+            default:
+                break;
         }
+
+        return { code: ResponseCode.success, success: true };
     } catch (error) {
         console.log(error);
 

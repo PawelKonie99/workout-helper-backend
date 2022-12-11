@@ -12,3 +12,15 @@ export interface IGetAllUsersResponse {
           }[]
         | [];
 }
+
+export interface IGetSingleUserResponse {
+    code: ResponseCode;
+    success: boolean;
+    parsedUserData?:
+        | {
+              roles: IRoles;
+              username: string;
+              id: string;
+          }
+        | Record<string, never>;
+}
