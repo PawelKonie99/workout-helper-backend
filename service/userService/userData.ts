@@ -7,6 +7,8 @@ import { studentResourcesModel } from "../../database/models/studentResources";
 
 dotenv.config();
 
+//TODO zastanowic sie czy te dane nie powinny byc po prostu wyslane podcza sloginu i zapisane w reduxie
+//TODO ODP: Mozna ale to i tak trzeba zostawic w razie jakichs zmian, np zaakceptowania trenera to wtedy wywolujemy tego routa
 export const getUserData = async (userToken: string): Promise<IUserDataResponse> => {
     try {
         const decodedUser = tokenAuth(userToken);

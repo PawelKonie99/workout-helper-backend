@@ -5,3 +5,9 @@ export interface IStandardResponse {
     message: string;
     success: boolean;
 }
+
+export interface IRoles {
+    adminRole: boolean;
+    userRole: boolean;
+    trainerRole: boolean;
+}

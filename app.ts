@@ -7,6 +7,7 @@ import { workoutRouter } from "./controller/workout";
 import { foodRouter } from "./controller/food";
 import { trainerRouter } from "./controller/trainer";
 import { studentRouter } from "./controller/student";
+import { adminRouter } from "./controller/admin";
 export const app = express();
 
 connectToDb();
@@ -19,4 +20,5 @@ app.use("/", workoutRouter);
 app.use("/", foodRouter);
 app.use("/", trainerRouter);
 app.use("/", studentRouter);
+app.use("/", adminRouter);
 app.use(unknownRequest);
