@@ -1,14 +1,11 @@
 import { model, Schema, Types } from "mongoose";
 import uniqueValidator from "mongoose-unique-validator";
+import { IRoles } from "../../types/common.types";
 
 export interface IUserSchema extends Document {
     username: string;
     passwordHash: string;
-    roles: {
-        adminRole: boolean;
-        userRole: boolean;
-        trainerRole: boolean;
-    };
+    roles: IRoles;
     workouts: {
         type?: Types.ObjectId;
         ref?: "Workout";
