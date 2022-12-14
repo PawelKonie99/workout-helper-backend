@@ -18,7 +18,7 @@ export const loginUser = async (userCredentails: IUserCredentials): Promise<ILog
 
         if (!registeredUser || !correctPassword) {
             return {
-                code: ResponseCode.unauthorized,
+                code: ResponseCode.success,
                 message: "Invalid username or password",
             };
         }

@@ -1,5 +1,6 @@
 import * as router from "express";
 import { Request, Response } from "express";
+import { changeUserPassword } from "../service/adminService/changeUserPassword";
 import { changeUserRole } from "../service/adminService/changeUserRole";
 import { deleteUser } from "../service/adminService/deleteUser";
 import { getAllUsers } from "../service/adminService/getAllUsers";
@@ -35,5 +36,12 @@ adminRouter.post("/admin/user/role", async (req: Request, res: Response) => {
     const userToken = req.headers.authorization;
 
     const { code, message, success } = await changeUserRole(userToken, req.body);
+    return res.status(code).json({ code, message, success });
+});
+
+adminRouter.post("/admin/user/password", async (req: Request, res: Response) => {
+    const userToken = req.headers.authorization;
+
+    const { code, message, success } = await changeUserPassword(userToken, req.body);
     return res.status(code).json({ code, message, success });
 });
