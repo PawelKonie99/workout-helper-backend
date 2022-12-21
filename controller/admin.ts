@@ -5,6 +5,7 @@ import { changeUserRole } from "../service/adminService/changeUserRole";
 import { deleteUser } from "../service/adminService/deleteUser";
 import { getAllUsers } from "../service/adminService/getAllUsers";
 import { getSingleUserData } from "../service/adminService/getSingleUserData";
+import { getUserByUsername } from "../service/adminService/getUserByUsername";
 
 export const adminRouter = router.Router();
 
@@ -44,4 +45,12 @@ adminRouter.post("/admin/user/password", async (req: Request, res: Response) => 
 
     const { code, message, success } = await changeUserPassword(userToken, req.body);
     return res.status(code).json({ code, message, success });
+});
+
+adminRouter.get("/admin/username/:username", async (req: Request, res: Response) => {
+    const userToken = req.headers.authorization;
+    const username = req.params.username;
+
+    const { code, parsedUserData, success } = await getUserByUsername(userToken, username);
+    return res.status(code).json({ code, parsedUserData, success });
 });
