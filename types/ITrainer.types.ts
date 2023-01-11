@@ -1,7 +1,7 @@
 import { Types } from "mongoose";
 import { MEAL_TYPES } from "../enums/meal";
 import { ResponseCode } from "../enums/responseCode";
-import { IMealMacros, IProductsSummary } from "./IFood.types";
+import { IMealMacros } from "./IFood.types";
 import { IUserWorkoutDataFromDatabase, IWorkoutFields } from "./IWorkout.types";
 
 export interface IStudentPayload {
@@ -41,7 +41,7 @@ export interface IGetSingleStudentDataResponse {
     allUserWorkouts?: IUserWorkoutDataFromDatabase[] | [];
     mealHistory?:
         | {
-              dailySummary: IProductsSummary;
+              dailySummary: IMealMacros;
               mealDate: string;
               breakfast: IMealMacros;
               brunch: IMealMacros;

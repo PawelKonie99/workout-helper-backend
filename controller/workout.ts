@@ -13,10 +13,11 @@ workoutRouter.post("/workouts", async (req: Request, res: Response) => {
     return res.status(code).json({ code, message, success });
 });
 
-workoutRouter.get("/workouts", async (req: Request, res: Response) => {
+workoutRouter.get("/workouts/history/:offset", async (req: Request, res: Response) => {
     const userToken = req.headers.authorization;
+    const offset = Number(req.params.offset);
 
-    const { code, allUserWorkouts, success } = await getAllUserWorkouts(userToken);
+    const { code, allUserWorkouts, success } = await getAllUserWorkouts(userToken, offset);
     return res.status(code).json({ code, allUserWorkouts, success });
 });
 

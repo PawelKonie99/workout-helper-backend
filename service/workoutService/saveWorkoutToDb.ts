@@ -17,10 +17,12 @@ export const saveWorkoutToDb = async (workout: IWorkout, userToken: string): Pro
             return { code: ResponseCode.unauthorized, message: "User not found", success: false };
         }
 
+        console.log("new Date().toLocaleDateString()", new Date().toLocaleDateString());
+
         const newWorkout = new workoutModel({
             workout: {
                 workoutData,
-                date: new Date(),
+                date: new Date().toLocaleDateString(),
             },
         });
         const savedWorkout = await newWorkout.save();

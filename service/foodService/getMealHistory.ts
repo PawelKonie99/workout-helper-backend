@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { mealModel } from "../../database/models/meal";
 import { userModel } from "../../database/models/user";
 import { ResponseCode } from "../../enums/responseCode";
@@ -6,7 +7,7 @@ import { IMealHistoryResponse } from "../../types/IFood.types";
 import { allUserProducts } from "./helpers/allUserProducts";
 import { fullDailyMealData } from "./helpers/fullDailyMealData";
 
-export const getMealHistory = async (userToken: string): Promise<IMealHistoryResponse> => {
+export const getMealHistory = async (userToken: string, offset: number): Promise<IMealHistoryResponse> => {
     try {
         const decodedUser = tokenAuth(userToken);
 
@@ -32,7 +33,9 @@ export const getMealHistory = async (userToken: string): Promise<IMealHistoryRes
             };
         });
 
-        return { code: ResponseCode.success, success: true, mealHistory };
+        const paginateProducts = _.take(mealHistory, offset);
+
+        return { code: ResponseCode.success, success: true, mealHistory: paginateProducts };
     } catch (error) {
         return { code: ResponseCode.badRequest, success: false };
     }

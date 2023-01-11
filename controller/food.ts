@@ -14,9 +14,11 @@ foodRouter.get("/food", async (req: Request, res: Response) => {
     return res.status(code).json({ code, allUserProducts, success });
 });
 
-foodRouter.get("/food/history", async (req: Request, res: Response) => {
+foodRouter.get("/food/history/:offset", async (req: Request, res: Response) => {
     const userToken = req.headers.authorization;
-    const { code, success, mealHistory } = await getMealHistory(userToken);
+    const offset = Number(req.params.offset);
+
+    const { code, success, mealHistory } = await getMealHistory(userToken, offset);
 
     return res.status(code).json({ code, mealHistory, success });
 });

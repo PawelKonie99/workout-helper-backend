@@ -4,9 +4,13 @@ import dotenv from "dotenv";
 import { workoutModel } from "../../database/models/workout";
 import { IAllWorkoutsResponse } from "../../types/IWorkout.types";
 import { tokenAuth } from "../../helpers/tokenAuth";
+import _ from "lodash";
 dotenv.config();
 
-export const getAllUserWorkouts = async (userToken: string): Promise<IAllWorkoutsResponse> => {
+export const getAllUserWorkouts = async (
+    userToken: string,
+    offset: number
+): Promise<IAllWorkoutsResponse> => {
     try {
         const decodedUser = tokenAuth(userToken);
         if (!decodedUser) {
@@ -23,7 +27,9 @@ export const getAllUserWorkouts = async (userToken: string): Promise<IAllWorkout
             })
         );
 
-        return { code: ResponseCode.success, success: true, allUserWorkouts };
+        const paginateWorkouts = _.take(allUserWorkouts, offset);
+
+        return { code: ResponseCode.success, success: true, allUserWorkouts: paginateWorkouts };
     } catch (error) {
         return { code: ResponseCode.badRequest, success: false };
     }
