@@ -7,12 +7,15 @@ import { userModel } from "../../database/models/user";
 import { workoutModel } from "../../database/models/workout";
 import { allUserProducts } from "../foodService/helpers/allUserProducts";
 import { fullDailyMealData } from "../foodService/helpers/fullDailyMealData";
+import _ from "lodash";
 
 dotenv.config();
 
 export const getSingleStudentData = async (
     userToken: string,
-    userId: string
+    userId: string,
+    workoutOffset: number,
+    productsOffset: number
 ): Promise<IGetSingleStudentDataResponse> => {
     try {
         const decodedUser = tokenAuth(userToken);
@@ -29,6 +32,8 @@ export const getSingleStudentData = async (
                 return workout;
             })
         );
+
+        const paginateWorkouts = _.take(allUserWorkouts, workoutOffset);
 
         const getAllUserProducts = await allUserProducts({ mealModel, userModel, userId });
 
@@ -48,7 +53,14 @@ export const getSingleStudentData = async (
             };
         });
 
-        return { code: ResponseCode.success, success: true, allUserWorkouts, mealHistory };
+        const paginateProducts = _.take(mealHistory, productsOffset);
+
+        return {
+            code: ResponseCode.success,
+            success: true,
+            allUserWorkouts: paginateWorkouts,
+            mealHistory: paginateProducts,
+        };
     } catch (error) {
         return { code: ResponseCode.badRequest, success: false };
     }

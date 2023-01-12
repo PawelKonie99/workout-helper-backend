@@ -4,7 +4,7 @@ import { IWorkoutFields } from "../../types/IWorkout.types";
 
 export interface IWorkoutSchema extends Document {
     workout: {
-        date: Date;
+        date: string;
         workoutData: IWorkoutFields[];
     };
     user: {
@@ -16,7 +16,7 @@ export interface IWorkoutSchema extends Document {
 const workoutSchema = new Schema<IWorkoutSchema>({
     workout: {
         date: {
-            type: Date,
+            type: String,
             required: true,
         },
         workoutData: [

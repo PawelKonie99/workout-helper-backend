@@ -7,8 +7,13 @@ import { IMealHistoryResponse } from "../../types/IFood.types";
 import { allUserProducts } from "./helpers/allUserProducts";
 import { fullDailyMealData } from "./helpers/fullDailyMealData";
 
-export const getMealHistory = async (userToken: string, offset: number): Promise<IMealHistoryResponse> => {
+export const getMealHistoryByDate = async (
+    userToken: string,
+    dateToFind: string
+): Promise<IMealHistoryResponse> => {
     try {
+        const formatedDate = dateToFind.replaceAll("-", "/");
+
         const decodedUser = tokenAuth(userToken);
 
         if (!decodedUser) {
@@ -33,9 +38,9 @@ export const getMealHistory = async (userToken: string, offset: number): Promise
             };
         });
 
-        const paginateProducts = _.take(mealHistory, offset);
+        const filteredProductsByDate = mealHistory.filter(({ mealDate }) => mealDate === formatedDate);
 
-        return { code: ResponseCode.success, success: true, mealHistory: paginateProducts };
+        return { code: ResponseCode.success, success: true, mealHistory: filteredProductsByDate };
     } catch (error) {
         return { code: ResponseCode.badRequest, success: false };
     }

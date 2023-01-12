@@ -22,7 +22,7 @@ export const saveProductToDb = async (
         }
 
         const date = new Date().toLocaleDateString();
-        // const date = new Date(Date.now() - 86400000).toLocaleDateString();
+        // const date = new Date(Date.now() - 172800000).toLocaleDateString();
 
         const getAllUserProducts = await allUserProducts({ mealModel, userModel, userId: decodedUser.id });
 

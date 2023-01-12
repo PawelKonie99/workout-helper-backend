@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { mealModel } from "../../database/models/meal";
 import { userModel } from "../../database/models/user";
 import { ResponseCode } from "../../enums/responseCode";

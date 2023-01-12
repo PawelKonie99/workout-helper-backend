@@ -44,7 +44,7 @@ export interface ITodayProductsResponse {
     code: ResponseCode;
     success: boolean;
     todayUserProducts?: ITodayProducts | Record<string, never>;
-    dailySummary?: IProductsSummary | Record<string, never>;
+    dailySummary?: IMealMacros | Record<string, never>;
 }
 
 export interface ITodayProducts {
@@ -59,7 +59,7 @@ export interface ITodayProducts {
 export interface IMealHistoryResponse {
     mealHistory?:
         | {
-              dailySummary: IProductsSummary;
+              dailySummary: IMealMacros;
               mealDate: string;
               breakfast: IMealMacros;
               brunch: IMealMacros;
@@ -70,13 +70,6 @@ export interface IMealHistoryResponse {
         | [];
     code: ResponseCode;
     success: boolean;
-}
-
-export interface IProductsSummary {
-    totalKcal: number;
-    totalProteins: number;
-    totalFat: number;
-    totalCarbons: number;
 }
 
 export interface IMealMacros {

@@ -1,6 +1,6 @@
 import { ResponseCode } from "../enums/responseCode";
 import { MANAGE_REQUESTED_TRAINERS } from "../enums/userDecision";
-import { IDatabaseProduct, IProductsSummary } from "./IFood.types";
+import { IDatabaseProduct, IMealMacros } from "./IFood.types";
 import { IWorkoutFields } from "./IWorkout.types";
 
 export interface ITrainingPlanResponse {
@@ -14,7 +14,7 @@ export interface IGetStudenDietResponse {
     success: boolean;
     diet?:
         | {
-              dailySummary?: IProductsSummary | Record<string, never>;
+              dailySummary?: IMealMacros | Record<string, never>;
               breakfast: IDatabaseProduct[];
               brunch: IDatabaseProduct[];
               dinner: IDatabaseProduct[];

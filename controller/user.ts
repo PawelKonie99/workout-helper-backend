@@ -1,5 +1,6 @@
 import * as router from "express";
 import { Request, Response } from "express";
+import { changePassword } from "../service/userService/changePassword";
 import { loginUser } from "../service/userService/loginUser";
 import { registerUser } from "../service/userService/registerUser";
 import { getUserData } from "../service/userService/userData";
@@ -17,6 +18,15 @@ userRouter.post("/user/login", async (req: Request, res: Response) => {
     const { code, message, loggedUser } = registeredUser;
 
     return res.status(code).json({ code, message, loggedUser });
+});
+
+userRouter.post("/user/password", async (req: Request, res: Response) => {
+    const userToken = req.headers.authorization;
+
+    const changedPasswordResponse = await changePassword(userToken, req.body);
+    const { code, success, message } = changedPasswordResponse;
+
+    return res.status(code).json({ code, success, message });
 });
 
 userRouter.get("/user", async (req: Request, res: Response) => {

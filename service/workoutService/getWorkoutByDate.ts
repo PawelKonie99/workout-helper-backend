@@ -4,14 +4,16 @@ import dotenv from "dotenv";
 import { workoutModel } from "../../database/models/workout";
 import { IAllWorkoutsResponse } from "../../types/IWorkout.types";
 import { tokenAuth } from "../../helpers/tokenAuth";
-import _ from "lodash";
+
 dotenv.config();
 
-export const getAllUserWorkouts = async (
+export const getWorkoutByDate = async (
     userToken: string,
-    offset: number
+    dateToFind: string
 ): Promise<IAllWorkoutsResponse> => {
     try {
+        const formatedDate = dateToFind.replaceAll("-", "/");
+
         const decodedUser = tokenAuth(userToken);
         if (!decodedUser) {
             return { code: ResponseCode.unauthorized, success: false };
@@ -27,9 +29,11 @@ export const getAllUserWorkouts = async (
             })
         );
 
-        const paginateWorkouts = _.take(allUserWorkouts, offset);
+        const filteredWorkoutsByDate = allUserWorkouts.filter(
+            ({ workout: { date } }) => date === formatedDate
+        );
 
-        return { code: ResponseCode.success, success: true, allUserWorkouts: paginateWorkouts };
+        return { code: ResponseCode.success, success: true, allUserWorkouts: filteredWorkoutsByDate };
     } catch (error) {
         return { code: ResponseCode.badRequest, success: false };
     }

@@ -6,7 +6,7 @@ export interface IWorkout {
 
 export interface IUserWorkoutDataFromDatabase {
     workout: {
-        date: Date;
+        date: string;
         workoutData: IWorkoutFields[];
     };
 }

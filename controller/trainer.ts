@@ -16,13 +16,24 @@ trainerRouter.get("/trainer/student", async (req: Request, res: Response) => {
     return res.status(code).json({ code, allStudents, success });
 });
 
-trainerRouter.get("/trainer/student/:id", async (req: Request, res: Response) => {
-    const userToken = req.headers.authorization;
-    const userId = req.params.id;
-    const { code, success, allUserWorkouts, mealHistory } = await getSingleStudentData(userToken, userId);
+trainerRouter.get(
+    "/trainer/student/:id/:workoutOffset/:productsOffset",
+    async (req: Request, res: Response) => {
+        const userToken = req.headers.authorization;
+        const userId = req.params.id;
+        const workoutOffset = Number(req.params.workoutOffset);
+        const productsOffset = Number(req.params.productsOffset);
 
-    return res.status(code).json({ code, success, allUserWorkouts, mealHistory });
-});
+        const { code, success, allUserWorkouts, mealHistory } = await getSingleStudentData(
+            userToken,
+            userId,
+            workoutOffset,
+            productsOffset
+        );
+
+        return res.status(code).json({ code, success, allUserWorkouts, mealHistory });
+    }
+);
 
 trainerRouter.get("/trainer/diet/:studentId", async (req: Request, res: Response) => {
     const userToken = req.headers.authorization;
