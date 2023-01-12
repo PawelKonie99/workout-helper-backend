@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import { getAllUserWorkouts } from "../service/workoutService/getAllUserWorkouts";
 import { getAllWorkoutOptions } from "../service/workoutService/getAllWorkoutOptions";
 import { getBestExercise } from "../service/workoutService/getBestExercise";
+import { getWorkoutByDate } from "../service/workoutService/getWorkoutByDate";
 import { saveWorkoutToDb } from "../service/workoutService/saveWorkoutToDb";
 export const workoutRouter = router.Router();
 
@@ -18,6 +19,14 @@ workoutRouter.get("/workouts/history/:offset", async (req: Request, res: Respons
     const offset = Number(req.params.offset);
 
     const { code, allUserWorkouts, success } = await getAllUserWorkouts(userToken, offset);
+    return res.status(code).json({ code, allUserWorkouts, success });
+});
+
+workoutRouter.get("/workouts/date/:date", async (req: Request, res: Response) => {
+    const userToken = req.headers.authorization;
+    const date = req.params.date;
+
+    const { code, allUserWorkouts, success } = await getWorkoutByDate(userToken, date);
     return res.status(code).json({ code, allUserWorkouts, success });
 });
 
