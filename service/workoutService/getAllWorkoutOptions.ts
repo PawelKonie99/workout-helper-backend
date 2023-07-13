@@ -2,7 +2,7 @@ import { ResponseCode } from "../../enums/responseCode";
 import dotenv from "dotenv";
 import { IAllWorkoutOptionsResponse } from "../../types/IWorkout.types";
 import { tokenAuth } from "../../helpers/tokenAuth";
-import { EXERCISE_NAME, REPS_QUANTITY, SERIES_QUANTITY, WEIGHT_QUANTITY } from "../../const/workoutOptions";
+import { EXERCISE_NAME, REPS_QUANTITY, SERIES_QUANTITY } from "../../const/workoutOptions";
 dotenv.config();
 
 export const getAllWorkoutOptions = async (userToken: string): Promise<IAllWorkoutOptionsResponse> => {
@@ -21,7 +21,6 @@ export const getAllWorkoutOptions = async (userToken: string): Promise<IAllWorko
             exercise: EXERCISE_NAME,
             reps: REPS_QUANTITY,
             series: SERIES_QUANTITY,
-            weight: WEIGHT_QUANTITY,
         };
     } catch (error) {
         return {
